@@ -282,5 +282,164 @@
 			return _tail->node;
 		}
 
+		/*
+			Define modifiers
+		*/
+
+		template <typename InputIt>
+		void assign(InputIt first, InputIt last)
+		{
+			clear();
+			insert(begin(), first, last);
+		}
+
+		void assign(size_t n, const value_type& val)
+		{
+			clear();
+			insert(begin(), n, val);
+		}
+
+		void push_front(const value_type& val)
+		{
+			insert(begin(), val);
+		}
+
+		void pop_front()
+		{
+			erase(begin());
+		}
+
+		void push_back(const value_type& val)
+		{
+			insert(end(), val);
+		}
+
+		void pop_back()
+		{
+			iterator iter = end();
+			iter--;
+			erase(iter);
+		}
+
+		iterator insert(iterator position, const value_type& val)
+		{
+			insert(position, 1, val);
+
+			ListNode<T>* nodeLeft = postion._prev;
+			ListNode<T>* nodeRight = nodeLeft ?  nodeLeft->nxt : _head;
+			return iterator(nodeLeft, nodeRight);
+		}
+
+		void insert(iterator position, size_t n, const value_type& val)
+		{
+			ListNode<T>* nodeLeft = postion._prev;
+			ListNode<T>* nodeRight = postion._nxt;
+
+			ListNode<T>* nn = nodeLeft;
+			for (size_t i = 0; i < n; i++)
+			{
+				ListNode<T>* tmp = new ListNode<T>(nn, NULL, val);
+				if (nn)
+					nn->next = tmp;
+				else
+					_head = tmp;
+				_len++;
+				nn = tmp;
+			}
+			
+			if (nodeRight)
+			{
+				nodeRight->prev = nn;
+				nn->nxt = nodeRight;
+			}
+			else
+				_tail = nn;
+		}
+
+		template <typename InputIt>
+		void insert(iterator position, InputIt first, InputIt last)
+		{
+			ListNode<T>* nodeLeft = postion._prv;
+			ListNode<T>* nodeRight = postion._nxt;
+
+			ListNode<T>* nn = nodeLeft;
+			for (InputIt iter = first; iter != last; i++)
+			{
+				ListNode<T>* tmp = new ListNode<T>(nn, NULL, *iter);
+				if (nn)
+					nn->next = tmp;
+				else
+					head = tmp;
+				_len++;
+				nn = tmp;
+			}
+
+			if (nodeRight)
+			{
+				nodeRight->prev = nn;
+				nn->nxt = nodeRight;
+			}
+			else
+				_tail = nn;
+		}
+
+		iterator erase(iterator first, iterator last)
+		{
+			ListNode<T>* nodeLeft = first._prev;
+			ListNode<T>* nodeRight = last._nxt;
+
+			iterator ite = first;
+			while(ite != last)
+			{
+				iterator tmp(ite);
+				_len--;
+				ite = ++ite;
+				delete tmp._nxt;
+			}
+
+			if (nodeLeft)
+				nodeLeft->next = nodeRight;
+			else
+				_head = nodeRight;
+			if (nodeRight)
+				nodeRight->prev = nodeLeft;
+			else
+				_tail = nodeLeft;
+
+			last._prev = first._prv;
+			return last;
+		}
+
+		iterator erase(iterator position)
+		{
+			iterator nxt = iterator(position);
+			nxt++;
+			return erase(position, nxt);
+		}
+
+		void swap(List &x)
+		{
+			std::swap(_head, x._head);
+			std::swap(_tail, x._tail);
+			std::swap(_len, x._len);
+		}
+
+		void resize(size_t n, value_type val = value_type())
+		{
+			if (n >= _len)
+				insert(end(), n - _len, val);
+			else
+			{
+				iterator ite = begin();
+				for (size_t i = 0l i < n; i++)
+					++ite;
+				erase(ite, end());
+			}
+		}
+
+		void clear()
+		{
+			erase(begin(), end());
+		}
 	};
 #endif
