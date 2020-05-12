@@ -201,5 +201,86 @@
 		/*
 			Define Iterators
 		*/
+
+		iterator	begin()
+		{
+			return iterator(NULL, (ListNode<const T>*)_head);
+		}
+		
+		const_iterator begin() const
+		{
+			return iterator(NULL, const _head);
+		}
+		
+		iterator	end()
+		{
+			return iterator(NULL, _tail);
+		}
+		
+		const_iterator end() const
+		{
+			return iterator(NULL, (ListNode<const T>*)_tail);
+		}
+		
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return const_reverse_iterator(end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
+		}
+
+		/*
+			Define capacity
+		*/
+
+		bool empty() const
+		{
+			return _len == 0;
+		}
+
+		size_t size() const
+		{
+			return _len;
+		}
+
+		size_t max_size() const;
+		
+		/*
+			Define element access
+		*/
+
+		reference front()
+		{
+			return _head->node;
+		}
+
+		reference front() const
+		{
+			return _head->node;
+		}
+
+		reference back()
+		{
+			return _tail->node;
+		}
+
+		reference back() const
+		{
+			return _tail->node;
+		}
+
 	};
 #endif
