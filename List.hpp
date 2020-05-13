@@ -1,6 +1,7 @@
 #ifndef LIST_HPP
 #define LIST_HPP
-
+# include <iterator>
+# include "Utility.hpp"
 namespace ft
 {	/*
 	List:
@@ -13,19 +14,19 @@ namespace ft
 	template<typename T>
 	struct ListNode
 	{
-		ListNode(ListNode<t> *prev_, ListNode<T> *nxt, ListNode<T> node_):prev(prev_),nxt(nxt_), node(node_)
+		ListNode(ListNode<T> *prev_, ListNode<T> *nxt_, const T &node_):prev(prev_),nxt(nxt_), node(node_)
 		{
 		}
 		ListNode<T> *prev;
 		ListNode<T> *nxt;
 		T           node;
 	};
-	template<typname T>
+	template<typename T>
 	class ListIterator
 	{
 		private:
-			ListNode<t>*    _prev;
-			ListNode<t>*    _nxt;
+			ListNode<T>*    _prev;
+			ListNode<T>*    _nxt;
 		public:
 			// struct iterator {
 			//   typedef T         value_type;
@@ -33,12 +34,12 @@ namespace ft
 			//   typedef Pointer   pointer;
 			//   typedef Reference reference;
 			//   typedef Category  iterator_category;
-			// };
-			typedef T							value_type;
-			typedef	std::ptrdiff_t				difference_type;
-			typedef	T*							pointer;
-			typedef	T&							reference;
-			typedef	BidirectionalIteratorTag	iterator_category;
+			// };BidirectionalIteratorTag
+			typedef T								value_type;
+			typedef	std::ptrdiff_t					difference_type;
+			typedef	T*								pointer;
+			typedef	T&								reference;
+			typedef	BidirectionalIteratorTag		iterator_category;
 			ListIterator(ListNode<T> *prev, ListNode<T> *nxt): _prev(prev), _nxt(nxt)
 			{
 			}
@@ -174,13 +175,13 @@ namespace ft
 				insert(begin(), n, val);
 			}
 
-			template typename<InputIt>
+			template <typename InputIt>
 			explicit List(InputIt first, InputIt last): _head(NULL), _tail(NULL), _len(0)
 			{
 				insert(begin(), first, last);
 			}
 
-			explist	List(const List& other): _head(NULL), _tail(NULL), _len(0)
+			explicit	List(const List& other): _head(NULL), _tail(NULL), _len(0)
 			{
 				insert(begin(), other.begin(), other.end());
 			}
@@ -203,12 +204,12 @@ namespace ft
 
 			iterator	begin()
 			{
-				return iterator(NULL, (ListNode<const T>*)_head);
+				return iterator(NULL, _head);
 			}
 
 			const_iterator begin() const
 			{
-				return iterator(NULL, const _head);
+				return iterator(NULL, (ListNode<const T>*) _head);
 			}
 
 			iterator	end()
@@ -324,22 +325,22 @@ namespace ft
 			{
 				insert(position, 1, val);
 
-				ListNode<T>* nodeLeft = postion._prev;
+				ListNode<T>* nodeLeft = position._prev;
 				ListNode<T>* nodeRight = nodeLeft ?  nodeLeft->nxt : _head;
 				return iterator(nodeLeft, nodeRight);
 			}
 
 			void insert(iterator position, size_t n, const value_type& val)
 			{
-				ListNode<T>* nodeLeft = postion._prev;
-				ListNode<T>* nodeRight = postion._nxt;
+				ListNode<T>* nodeLeft = position._prev;
+				ListNode<T>* nodeRight = position._nxt;
 
 				ListNode<T>* nn = nodeLeft;
 				for (size_t i = 0; i < n; i++)
 				{
 					ListNode<T>* tmp = new ListNode<T>(nn, NULL, val);
 					if (nn)
-						nn->next = tmp;
+						nn->nxt = tmp;
 					else
 						_head = tmp;
 					_len++;
@@ -358,17 +359,17 @@ namespace ft
 			template <typename InputIt>
 			void insert(iterator position, InputIt first, InputIt last)
 			{
-				ListNode<T>* nodeLeft = postion._prv;
-				ListNode<T>* nodeRight = postion._nxt;
+				ListNode<T>* nodeLeft = position._prv;
+				ListNode<T>* nodeRight = position._nxt;
 
 				ListNode<T>* nn = nodeLeft;
-				for (InputIt iter = first; iter != last; i++)
+				for (InputIt iter = first; iter != last; iter++)
 				{
 					ListNode<T>* tmp = new ListNode<T>(nn, NULL, *iter);
 					if (nn)
 						nn->next = tmp;
 					else
-						head = tmp;
+						_head = tmp;
 					_len++;
 					nn = tmp;
 				}
@@ -397,7 +398,7 @@ namespace ft
 				}
 
 				if (nodeLeft)
-					nodeLeft->next = nodeRight;
+					nodeLeft->nxt = nodeRight;
 				else
 					_head = nodeRight;
 				if (nodeRight)
@@ -405,7 +406,7 @@ namespace ft
 				else
 					_tail = nodeLeft;
 
-				last._prev = first._prv;
+				last._prev = first._prev;
 				return last;
 			}
 
@@ -430,7 +431,7 @@ namespace ft
 				else
 				{
 					iterator ite = begin();
-					for (size_t i = 0l i < n; i++)
+					for (size_t i = 0; i < n; i++)
 						++ite;
 					erase(ite, end());
 				}
@@ -447,25 +448,151 @@ namespace ft
 
 			void splice(iterator position, List& x)
 			{
-				splice(position, x, x.begin(), x.end());
+				insert(position, x.begin(), x.end());
+				x.clear();
 			}
 
 			void splice(iterator position, List& x, iterator i)
 			{
-				splice(position, x, i, ++i);
-			} 
+				insert(position, *i);
+				x.erase(i);
+			}
 
-			void splice(iterator position, List& x, iterator first, iterator last);
+			void splice(iterator position, List& x, iterator first, iterator last)
+			{
+				insert(position, first, last);
+				x.erase(first, last);
+			}
 
-			void remove(const value_type& val);
+			void remove(const value_type& val)
+			{
+				for(iterator it = begin(); it != end();)
+				{
+					if (*it == val)
+						it = erase(it);
+					else
+						it++;
+				}
+			}
+
 			template <typename Predicate>
-			void remove_if(Predicate pred);
-			void unique();
+			void remove_if(Predicate pred)
+			{
+				for (iterator it = begin(); it != end();)
+				{
+					if (pred(*it))
+						it = erase(it);
+					else
+						it++;
+				}
+			}
+
+			void unique()
+			{
+				iterator start = begin();
+				start++;
+				for (iterator it = start; it != end();)
+				{
+					iterator tmp = it;
+					tmp--;
+					if (*tmp == *it)
+						it = erase(it);
+					else
+						it++;
+				}
+			}
+
+
 			template <typename BinaryPredicate>
-			void unique(BinaryPredicate binary_pred);
+			void unique(BinaryPredicate binary_pred)
+			{
+				iterator start = begin();
+				start++;
+				for (iterator it = start; it != end();)
+				{
+					iterator tmp = it;
+					--tmp;
+					if (binary_pred(*tmp, *it))
+						it = erase(it);
+					else
+						++it;
+				}
+			}
 			void merge(List& x);
 			template <typename Compare>
 			void merge(List& x, Compare comp);
+			// void merge(List& x)
+			// {
+			// 	ListNode<T> *a = begin(); //List a
+			// 	ListNode<T> *b = x.begin(); //List x
+			// 	ListNode<T> *nxt;
+			// 	ListNode<T> *bef;
+			// 	while(b != b._tail)
+			// 	{
+			// 		if (a == end() || b->node < a->node)
+			// 		{
+			// 			nxt = b->nxt;
+			// 			bef = a->prev;
+						
+			// 			//Link bef and x 
+			// 			bef->nxt = b;
+			// 			b->prev = bef;
+
+			// 			//Link x and a
+			// 			b->nxt = a;
+			// 			a->prev = b;
+
+			// 			//Move x
+			// 			b = nxt;
+			// 		}
+			// 		else
+			// 			a = a->nxt;
+			// 	}
+			// 	_len += x._len;
+
+			// 	//Reset x
+			// 	x._size = 0;
+			// 	ListNode<T> *tmp = x._tail;
+			// 	tmp->nxt = tmp;
+			// 	tmp->prv = tmp;
+			// }
+
+			// template <typename Compare>
+			// void merge(List& x, Compare comp)
+			// {
+			// 	ListNode<T> *a = begin(); //List a
+			// 	ListNode<T> *b = x.begin(); //List x
+			// 	ListNode<T> *nxt;
+			// 	ListNode<T> *bef;
+			// 	while(b != b._tail)
+			// 	{
+			// 		if (a == end() || comp(b->node, a->node))
+			// 		{
+			// 			nxt = b->nxt;
+			// 			bef = a->prev;
+						
+			// 			//Link bef and x 
+			// 			bef->nxt = b;
+			// 			b->prev = bef;
+
+			// 			//Link x and a
+			// 			b->nxt = a;
+			// 			a->prev = b;
+
+			// 			//Move x
+			// 			b = nxt;
+			// 		}
+			// 		else
+			// 			a = a->nxt;
+			// 	}
+			// 	_len += x._len;
+
+			// 	//Reset x
+			// 	x._size = 0;
+			// 	ListNode<T> *tmp = x._tail;
+			// 	tmp->nxt = tmp;
+			// 	tmp->prv = tmp;				
+			// }
 			void sort();
 			template <typename Compare>
 			void sort(Compare comp);
@@ -487,7 +614,7 @@ namespace ft
 		ListIterator<const T> iter2 = rhs.begin();
 		while (iter1 != lhs.end() && iter2 != rhs.end())
 		{
-			if (*iter1 != *iter)
+			if (*iter1 != *iter2)
 				return *iter1 < *iter2;
 
 			++iter1;
@@ -520,7 +647,7 @@ namespace ft
 
 
 	template <typename T>
-	voud swap(List<T>& x, List<T>& y)
+	void swap(List<T>& x, List<T>& y)
 	{
 		x.swap(y);
 	}
