@@ -601,6 +601,26 @@ namespace ft
 			friend class ListIterator;
 	};
 
+
+	template <typename T>
+	bool operator==(const List<T>& lhs, const List<T>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+
+		ListIterator<const T> ite1 = lhs.begin();
+		ListIterator<const T> ite2 = rhs.begin();
+		while (ite1 != lhs.end() && ite2 != rhs.end())
+		{
+			if (*ite1 != *ite2)
+				return false;
+
+			++ite1;
+			++ite2;
+		}
+		return true;
+	}
+
 	template <typename T>
 	bool operator!=(const List<T>& lhs, const List<T>& rhs)
 	{
@@ -636,7 +656,7 @@ namespace ft
 	template <typename T>
 	bool operator>(const List<T>& lhs, const List<T>& rhs)
 	{
-		return (lhs > rhs);
+		return rhs < lhs;
 	}
 
 	template <typename T>

@@ -570,34 +570,36 @@ static void test_swap()
 	assert(get_n_bwd(lst2, 0)->val == 2);
 }
 
-// static void test_cmp_eq()
-// {
-// 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
-// 	ft::List<ConstrCounter> lst(array, array + 5);
-// 	ft::List<ConstrCounter> lst2(lst);
 
-// 	assert(lst == lst2);
-// 	assert(lst >= lst2);
-// 	assert(lst <= lst2);
+static void test_cmp_eq()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(lst);
 
-// 	lst2.push_back(50);
-// 	assert(lst != lst2);
-// 	assert(lst < lst2);
-// 	assert(lst <= lst2);
-// 	assert(lst2 > lst);
-// 	assert(lst2 >= lst);
+	assert(lst == lst2);
+	assert(lst >= lst2);
+	assert(lst <= lst2);
 
-// 	lst.push_back(200);
-// 	assert(lst != lst2);
-// 	assert(lst > lst2);
-// 	assert(lst >= lst2);
-// 	assert(lst2 < lst);
-// 	assert(lst2 <= lst);
-// }
+	lst2.push_back(50);
+	assert(lst != lst2);
+	assert(lst < lst2);
+	assert(lst <= lst2);
+	assert(lst2 > lst);
+	assert(lst2 >= lst);
+
+	lst.push_back(200);
+	assert(lst != lst2);
+	assert(lst > lst2);
+	assert(lst >= lst2);
+	assert(lst2 < lst);
+	assert(lst2 <= lst);
+}
 
 void test_list()
 {
     test_one("push_back", test_pushback);
+	test_one("push_front", test_pushfront);
 	test_one("push_front", test_pushfront);
 	test_one("assign", test_assign);
 	test_one("assign_iter", test_assign_iter);
@@ -616,5 +618,5 @@ void test_list()
 	test_one("pop_front", test_pop_front);
 	test_one("resize", test_resize);
 	test_one("swap", test_swap);
-	// test_one("cmp_eq", test_cmp_eq);
+	test_one("cmp_eq", test_cmp_eq);
 }
