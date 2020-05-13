@@ -663,6 +663,25 @@ static void test_splice_iter_first_last()
 	assert(get_n_bwd(lst2, 8)->val == 500);
 }
 
+static void test_remove()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+	lst.remove(2);
+
+	assert(lst.size() == 4);
+	assert(get_n_bwd(lst, 0)->val == 0);
+	assert(get_n_fwd(lst, 1)->val == 1);
+	assert(get_n_bwd(lst, 2)->val == 3);
+	assert(get_n_fwd(lst, 3)->val == 4);
+	lst.remove(0);
+	assert(lst.size() == 3);
+	assert(get_n_bwd(lst, 0)->val == 1);
+	assert(get_n_fwd(lst, 1)->val == 3);
+	assert(get_n_bwd(lst, 2)->val == 4);
+	
+}
+
 void test_list()
 {
     test_one("push_back", test_pushback);
@@ -689,6 +708,6 @@ void test_list()
 	test_one("splice", test_splice);
 	test_one("splice_iter", test_splice_iter);
 	test_one("splice_iter_first_last", test_splice_iter_first_last);
-
+	test_one("remove", test_remove);
 
 }
