@@ -1,5 +1,4 @@
 #include "Test.hpp"
-
 template <typename T>
 static ft::ListIterator<T> get_n_fwd(ft::List<T>& lst, size_t index)
 {
@@ -596,6 +595,74 @@ static void test_cmp_eq()
 	assert(lst2 <= lst);
 }
 
+static void test_splice()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array2[5] = { 10, 11, 12, 13, 14 };
+
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(array2, array2 + 5);
+
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1;
+	lst.splice(ite1, lst2);
+
+	assert(lst.size() == 10);
+	assert(lst2.size() == 0);
+	assert(lst2.empty());
+
+	assert(get_n_bwd(lst, 0)->val == 0);
+	assert(get_n_fwd(lst, 1)->val == 10);
+	assert(get_n_bwd(lst, 2)->val == 11);
+	assert(get_n_fwd(lst, 3)->val == 12);
+	assert(get_n_bwd(lst, 4)->val == 13);
+	assert(get_n_bwd(lst, 5)->val == 14);
+	assert(get_n_bwd(lst, 6)->val == 1);
+	assert(get_n_bwd(lst, 7)->val == 2);
+	assert(get_n_bwd(lst, 8)->val == 3);
+	assert(get_n_bwd(lst, 9)->val == 4);
+}
+
+static void test_splice_iter()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(0, ConstrCounter(5));
+	
+	
+	
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1; ++ite1;
+	
+	lst2.splice (lst2.begin(),lst, ite1);
+	assert(lst2.size() == 1);
+	assert(get_n_bwd(lst2, 0)->val == 2);
+	assert(lst.size() == 4);
+}
+
+static void test_splice_iter_first_last()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array2[5] = { 100, 200, 300, 400, 500 };
+
+	ft::List<ConstrCounter> lst(array, array + 5);
+	ft::List<ConstrCounter> lst2(array2, array2 + 5);
+
+	ft::ListIterator<ConstrCounter> ite1 = lst.begin();
+	++ite1;
+	lst2.splice(lst2.begin(), lst, ite1, lst.end());
+	assert(lst2.size() == 9);
+	assert(get_n_bwd(lst2, 0)->val == 1);
+	assert(get_n_fwd(lst2, 1)->val == 2);
+	assert(get_n_bwd(lst2, 2)->val == 3);
+	assert(get_n_fwd(lst2, 3)->val == 4);
+	assert(get_n_bwd(lst2, 4)->val == 100);
+	assert(get_n_bwd(lst2, 5)->val == 200);
+	assert(get_n_bwd(lst2, 6)->val == 300);
+	assert(get_n_bwd(lst2, 7)->val == 400);
+	assert(get_n_bwd(lst2, 8)->val == 500);
+}
+
 void test_list()
 {
     test_one("push_back", test_pushback);
@@ -619,4 +686,9 @@ void test_list()
 	test_one("resize", test_resize);
 	test_one("swap", test_swap);
 	test_one("cmp_eq", test_cmp_eq);
+	test_one("splice", test_splice);
+	test_one("splice_iter", test_splice_iter);
+	test_one("splice_iter_first_last", test_splice_iter_first_last);
+
+
 }

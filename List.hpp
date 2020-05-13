@@ -448,19 +448,19 @@ namespace ft
 
 			void splice(iterator position, List& x)
 			{
-				insert(position, x.begin(), x.end());
+				this->insert(position, x.begin(), x.end());
 				x.clear();
 			}
 
 			void splice(iterator position, List& x, iterator i)
 			{
-				insert(position, *i);
+				this->insert(position, *i);
 				x.erase(i);
 			}
 
 			void splice(iterator position, List& x, iterator first, iterator last)
 			{
-				insert(position, first, last);
+				this->insert(position, first, last);
 				x.erase(first, last);
 			}
 
