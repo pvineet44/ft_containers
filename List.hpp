@@ -89,12 +89,12 @@ namespace ft
 				return cpy;
 			}
 
-			T&	operator*()
+			T&	operator*() const
 			{
 				return _nxt->node;
 			}
 
-			T&	operator->()
+			T&	operator->() const
 			{
 				return &_nxt->node;
 			}
@@ -181,7 +181,7 @@ namespace ft
 				insert(begin(), first, last);
 			}
 
-			explicit	List(const List& other): _head(NULL), _tail(NULL), _len(0)
+			List(const List& other): _head(NULL), _tail(NULL), _len(0)
 			{
 				insert(begin(), other.begin(), other.end());
 			}
@@ -209,17 +209,17 @@ namespace ft
 
 			const_iterator begin() const
 			{
-				return iterator(NULL, (ListNode<const T>*) _head);
+				return const_iterator(NULL, (ListNode<const T>*) _head);
 			}
 
 			iterator	end()
 			{
-				return iterator(NULL, _tail);
+				return iterator(_tail, NULL);
 			}
 
 			const_iterator end() const
 			{
-				return iterator(NULL, (ListNode<const T>*)_tail);
+				return const_iterator((ListNode<const T>*)_tail, NULL);
 			}
 
 			reverse_iterator rbegin()
@@ -267,7 +267,7 @@ namespace ft
 				return _head->node;
 			}
 
-			reference front() const
+			const_reference front() const
 			{
 				return _head->node;
 			}
@@ -277,7 +277,7 @@ namespace ft
 				return _tail->node;
 			}
 
-			reference back() const
+			const_reference back() const
 			{
 				return _tail->node;
 			}

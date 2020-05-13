@@ -5,9 +5,9 @@ static void test_pushback()
     ft::List<ConstrCounter> lst;
 	assert(lst.size() == 0);
 
-	lst.push_back(ConstrCounter(0));
+	lst.push_back(ConstrCounter(2));
 	assert(lst.size() == 1);
-	assert(lst.back().val == 0);
+	assert(lst.back().val == 2);
 
 	lst.push_back(ConstrCounter(1));
 	assert(lst.size() == 2);

@@ -3,5 +3,5 @@
 int main()
 {
     test_list();
-    std::cout << "Hello world" << std::endl;
+    std::cout << "All tests ran successfully!" << std::endl;
 }

@@ -5,10 +5,12 @@ COMP = clang++ -Wall -Wextra -Werror -fsanitize=address -g3
 # COMP = gcc -Wall -Wextra -g3
 SRC := $(wildcard *.cpp) 
 OBJ := $(patsubst %.cpp, %.o, $(SRC))
-GREEN='\033[01;32m'
-RESET='\033[00m'
+GREEN=\033[01;32m
+RESET=\033[00m
 
 all: $(BINARY)
+	@echo  "$(GREEN).................Running Unit tests for ft_containers................ $(RESET)"
+	@./$(BINARY)
 
 $(BINARY): $(OBJ)
 	@echo  "$(GREEN).................Making Unit tests for ft_containers................ $(RESET)"
