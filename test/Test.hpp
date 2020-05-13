@@ -1,8 +1,9 @@
 #ifndef TEST_HPP
 # define TEST_HPP
 # include "../List.hpp"
-#include <iostream>
-#include <assert.h>
+# include <iostream>
+# include <assert.h>
+# include <sstream>
 
 class ConstrCounter
 {

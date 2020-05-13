@@ -94,7 +94,7 @@ namespace ft
 				return _nxt->node;
 			}
 
-			T&	operator->() const
+			T*	operator->() const
 			{
 				return &_nxt->node;
 			}
@@ -359,7 +359,7 @@ namespace ft
 			template <typename InputIt>
 			void insert(iterator position, InputIt first, InputIt last)
 			{
-				ListNode<T>* nodeLeft = position._prv;
+				ListNode<T>* nodeLeft = position._prev;
 				ListNode<T>* nodeRight = position._nxt;
 
 				ListNode<T>* nn = nodeLeft;
@@ -367,7 +367,7 @@ namespace ft
 				{
 					ListNode<T>* tmp = new ListNode<T>(nn, NULL, *iter);
 					if (nn)
-						nn->next = tmp;
+						nn->nxt = tmp;
 					else
 						_head = tmp;
 					_len++;
