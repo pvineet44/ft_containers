@@ -76,6 +76,85 @@ namespace ft
                         return 0;
                     return (n->left ? n->left->height : -1) -       (n->right > n->right->height : -1);
                 }
+
+                static void rotate_left(node** target)
+			{
+				node* y = (*target)->right;
+				node* parent = (*target)->parent;
+				(*target)->parent = y;
+				y->parent = parent;
+				(*target)->right = y->left;
+				y->left = *target;
+				(*target)->height = max(
+					(*target)->left ? (*target)->left->height : -1,
+					(*target)->right ? (*target)->right->height : -1
+				) + 1;
+				*target = y;
+				y->height = max(
+					y->left ? y->left->height : -1,
+					y->right ? y->right->height : -1
+				) + 1;
+			}
+
+			static void rotate_right(node** target)
+			{
+				node* y = (*target)->left;
+				node* parent = (*target)->parent;
+				(*target)->parent = y;
+				y->parent = parent;
+				(*target)->left = y->right;
+				y->right = *target;
+				(*target)->height = max(
+					(*target)->left ? (*target)->left->height : -1,
+					(*target)->right ? (*target)->right->height : -1
+				) + 1;
+				*target = y;
+				y->height = max(
+					y->left ? y->left->height : -1,
+					y->right ? y->right->height : -1
+				) + 1;
+			}
+
+            static void deep_free(node*& n)
+			{
+				if (!n)
+					return;
+				deep_free(n->left);
+				deep_free(n->right);
+				delete n;
+				n = NULL;
+			}
+
+            static void print_rec(node* n, int indent = 1)
+			{
+				std::stringstream ss;
+				for (int i = 0; i < indent; i++) ss << ">>";
+				if (!n)
+				{
+					printf("%s NULL\n", ss.str().c_str());
+					return;
+				}
+				printf("%s El is %d (h = %d, balance = %d)\n", ss.str().c_str(), n->el.first, n->height, balance_factor(n));
+				printf("%s Left\n", ss.str().c_str());
+				print_rec(n->left, indent + 1);
+				printf("%s Right\n", ss.str().c_str());
+				print_rec(n->right, indent + 1);
+			}
+
+            static int max(int a, int b)
+			{
+				return a > b ? a : b;
+			}
+
+			static node* deep_cpy(node *parent, node* n)
+			{
+				if (!n)
+					return NULL;
+				node* cpy = new node(n->el, parent, NULL, NULL, n->height);
+				cpy->left = deep_cpy(cpy, n->left);
+				cpy->right = deep_cpy(cpy, n->right);
+				return cpy;
+			}
     };
 }
 
