@@ -682,6 +682,22 @@ static void test_remove()
 	
 }
 
+static bool	is_positive(int x)
+{
+	return (x >= 0);
+}
+
+static void test_remove_if()
+{
+	int array[5] = { 0, -1, -2, 3, 4 };
+	ft::List<int> lst(array, array + 5);
+	lst.remove_if(is_positive);
+
+	assert(lst.size() == 2);
+	assert(*get_n_bwd(lst, 0) == -1);
+	assert(*get_n_fwd(lst, 1) == -2);
+}
+
 void test_list()
 {
     test_one("push_back", test_pushback);
@@ -709,5 +725,5 @@ void test_list()
 	test_one("splice_iter", test_splice_iter);
 	test_one("splice_iter_first_last", test_splice_iter_first_last);
 	test_one("remove", test_remove);
-
+	test_one("remove_if", test_remove_if);
 }
