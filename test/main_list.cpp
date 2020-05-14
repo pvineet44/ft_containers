@@ -698,6 +698,19 @@ static void test_remove_if()
 	assert(*get_n_fwd(lst, 1) == -2);
 }
 
+static void test_unique()
+{
+	ConstrCounter array[5] = { 1, 1, 1, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.unique();
+	assert(lst.size() == 3);
+
+	assert(*get_n_bwd(lst, 0) == 1);
+	assert(*get_n_bwd(lst, 1) == 3);
+	assert(*get_n_bwd(lst, 2) == 4);
+}
+
 void test_list()
 {
     test_one("push_back", test_pushback);
@@ -726,4 +739,5 @@ void test_list()
 	test_one("splice_iter_first_last", test_splice_iter_first_last);
 	test_one("remove", test_remove);
 	test_one("remove_if", test_remove_if);
+	test_one("unique", test_unique);
 }
