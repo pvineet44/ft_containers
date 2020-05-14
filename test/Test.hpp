@@ -4,6 +4,7 @@
 # include <iostream>
 # include <assert.h>
 # include <sstream>
+# include <cmath>
 
 class ConstrCounter
 {

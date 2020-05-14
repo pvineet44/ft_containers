@@ -711,6 +711,43 @@ static void test_unique()
 	assert(*get_n_bwd(lst, 2) == 4);
 }
 
+//a binary predicate implemented as a function:
+bool same_integral_part (ConstrCounter first, ConstrCounter second)
+{
+	return (first.val == second.val); 
+}
+
+// a binary predicate implemented as a class:
+struct is_near
+{
+  bool operator() (double first, double second)
+	{
+		return (fabs(first-second)<5.0);
+	}
+};
+
+static void test_unique_binary_predicate()
+{
+	ConstrCounter array[5] = { 42, 42, 43, 43, 45 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.unique(same_integral_part);
+	assert(lst.size() == 3);
+	assert(get_n_bwd(lst, 0)->val == 42);
+	assert(get_n_fwd(lst, 1)->val == 43);
+	assert(get_n_bwd(lst, 2)->val == 45);
+
+	double mydoubles[]={ 2.72,  3.14, 12.15, 15.3,  72.25, 73.0 };
+	ft::List<double> lst1(mydoubles, mydoubles + 6);
+	lst1.unique(is_near());
+	assert(lst1.size() == 3);
+	ft::ListIterator<double> ite1 = lst1.begin();
+	assert(*ite1++ == 2.72);
+	assert(*ite1++ == 12.15);
+	assert(*ite1 == 72.25);
+
+}
+
 void test_list()
 {
     test_one("push_back", test_pushback);
@@ -740,4 +777,5 @@ void test_list()
 	test_one("remove", test_remove);
 	test_one("remove_if", test_remove_if);
 	test_one("unique", test_unique);
+	test_one("unique_binary_predicate", test_unique_binary_predicate);
 }
