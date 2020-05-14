@@ -518,85 +518,85 @@ namespace ft
 						++it;
 				}
 			}
-			void merge(List& x);
+			
+			void merge(List& x)
+			{
+				iterator beg = x.begin();
+				iterator end = x.end();
+				ft::List<T> newList;
+				while (beg != end)
+				{
+					push_back(*beg);
+					beg++;
+				}
+				this->sort();
+			}
+			
 			template <typename Compare>
-			void merge(List& x, Compare comp);
-			// void merge(List& x)
-			// {
-			// 	ListNode<T> *a = begin(); //List a
-			// 	ListNode<T> *b = x.begin(); //List x
-			// 	ListNode<T> *nxt;
-			// 	ListNode<T> *bef;
-			// 	while(b != b._tail)
-			// 	{
-			// 		if (a == end() || b->node < a->node)
-			// 		{
-			// 			nxt = b->nxt;
-			// 			bef = a->prev;
-						
-			// 			//Link bef and x 
-			// 			bef->nxt = b;
-			// 			b->prev = bef;
+			void merge(List& x, Compare comp)
+			{
+				iterator beg = x.begin();
+				iterator end = x.end();
+				ft::List<T> newList;
+				while (beg != end)
+				{
+					push_back(*beg);
+					beg++;
+				}
+				this->sort(comp);
+			}
+			
+			void sort()
+			{
+				iterator it = begin();
+				iterator tmp(it);
+				while (it != end())
+				{
+					tmp = it;
+					it++;
+					if (it == end())
+						break;
+					if (*tmp > *it)
+					{
+						std::swap(*tmp, *it);
+						it = begin();
+					}
+				}
+			}
 
-			// 			//Link x and a
-			// 			b->nxt = a;
-			// 			a->prev = b;
-
-			// 			//Move x
-			// 			b = nxt;
-			// 		}
-			// 		else
-			// 			a = a->nxt;
-			// 	}
-			// 	_len += x._len;
-
-			// 	//Reset x
-			// 	x._size = 0;
-			// 	ListNode<T> *tmp = x._tail;
-			// 	tmp->nxt = tmp;
-			// 	tmp->prv = tmp;
-			// }
-
-			// template <typename Compare>
-			// void merge(List& x, Compare comp)
-			// {
-			// 	ListNode<T> *a = begin(); //List a
-			// 	ListNode<T> *b = x.begin(); //List x
-			// 	ListNode<T> *nxt;
-			// 	ListNode<T> *bef;
-			// 	while(b != b._tail)
-			// 	{
-			// 		if (a == end() || comp(b->node, a->node))
-			// 		{
-			// 			nxt = b->nxt;
-			// 			bef = a->prev;
-						
-			// 			//Link bef and x 
-			// 			bef->nxt = b;
-			// 			b->prev = bef;
-
-			// 			//Link x and a
-			// 			b->nxt = a;
-			// 			a->prev = b;
-
-			// 			//Move x
-			// 			b = nxt;
-			// 		}
-			// 		else
-			// 			a = a->nxt;
-			// 	}
-			// 	_len += x._len;
-
-			// 	//Reset x
-			// 	x._size = 0;
-			// 	ListNode<T> *tmp = x._tail;
-			// 	tmp->nxt = tmp;
-			// 	tmp->prv = tmp;				
-			// }
-			void sort();
 			template <typename Compare>
-			void sort(Compare comp);
-			void reverse();
+			void sort(Compare comp)
+			{
+				iterator it = begin();
+				iterator tmp(it);
+				while (it != end())
+				{
+					tmp = it;
+					it++;
+					if (it == end())
+						break;
+					if (comp(*it, *tmp))
+					{
+						std::swap(*tmp, *it);
+						it = begin();
+					}
+				}
+			}
+
+			void reverse()
+			{
+				iterator beg = this->begin();
+				iterator end = this->end();
+				end--; 
+
+				for (unsigned int i = 0; i < this->size() / 2; i++)
+				{
+					std::swap(*beg, *end);
+					beg++;
+					end--;
+				}
+			}
+
 			template <typename E>
 			friend class ListIterator;
 	};

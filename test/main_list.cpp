@@ -748,8 +748,95 @@ static void test_unique_binary_predicate()
 
 }
 
+static void test_reverse()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.reverse();
+	assert(lst.size() == 5);
+	assert(get_n_fwd(lst, 0)->val == 4);
+	assert(get_n_fwd(lst, 1)->val == 3);
+	assert(get_n_fwd(lst, 2)->val == 2);
+	assert(get_n_fwd(lst, 3)->val == 1);
+	assert(get_n_fwd(lst, 4)->val == 0);
+}
+
+static void test_merge()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array1[5] = { 5, 10, 7, 9, 8 };
+
+
+	ft::List<ConstrCounter> lst(array1, array1 + 5);
+	ft::List<ConstrCounter> lst1(array, array + 5);
+	lst.merge(lst1);
+	assert(lst.size() == 10);
+	assert(get_n_fwd(lst, 0)->val == 0);
+	assert(get_n_fwd(lst, 1)->val == 1);
+	assert(get_n_fwd(lst, 2)->val == 2);
+	assert(get_n_fwd(lst, 3)->val == 3);
+	assert(get_n_fwd(lst, 4)->val == 4);
+	assert(get_n_fwd(lst, 5)->val == 5);
+	assert(get_n_fwd(lst, 6)->val == 7);
+	assert(get_n_fwd(lst, 7)->val == 8);
+	assert(get_n_fwd(lst, 8)->val == 9);
+	assert(get_n_fwd(lst, 9)->val == 10);
+}
+
+static void test_merge_comp()
+{
+	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
+	ConstrCounter array1[5] = { 5, 10, 7, 9, 8 };
+
+
+	ft::List<ConstrCounter> lst(array1, array1 + 5);
+	ft::List<ConstrCounter> lst1(array, array + 5);
+	lst.merge(lst1, std::greater<ConstrCounter>());
+	assert(lst.size() == 10);
+	assert(get_n_fwd(lst, 0)->val == 10);
+	assert(get_n_fwd(lst, 1)->val == 9);
+	assert(get_n_fwd(lst, 2)->val == 8);
+	assert(get_n_fwd(lst, 3)->val == 7);
+	assert(get_n_fwd(lst, 4)->val == 5);
+	assert(get_n_fwd(lst, 5)->val == 4);
+	assert(get_n_fwd(lst, 6)->val == 3);
+	assert(get_n_fwd(lst, 7)->val == 2);
+	assert(get_n_fwd(lst, 8)->val == 1);
+	assert(get_n_fwd(lst, 9)->val == 0);
+}
+
+static void test_sort()
+{
+	ConstrCounter array[5] = { 5, 3, 1, 2, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.sort();
+	assert(lst.size() == 5);
+	assert(get_n_fwd(lst, 0)->val == 1);
+	assert(get_n_fwd(lst, 1)->val == 2);
+	assert(get_n_fwd(lst, 2)->val == 3);
+	assert(get_n_fwd(lst, 3)->val == 4);
+	assert(get_n_fwd(lst, 4)->val == 5);
+}
+
+static void test_sort_comp()
+{
+	ConstrCounter array[5] = { 5, 3, 1, 2, 4 };
+	ft::List<ConstrCounter> lst(array, array + 5);
+
+	lst.sort(std::greater<ConstrCounter>());
+	assert(lst.size() == 5);
+	assert(get_n_fwd(lst, 0)->val == 5);
+	assert(get_n_fwd(lst, 1)->val == 4);
+	assert(get_n_fwd(lst, 2)->val == 3);
+	assert(get_n_fwd(lst, 3)->val == 2);
+	assert(get_n_fwd(lst, 4)->val == 1);
+}
+
 void test_list()
 {
+	std::cout << "\e[1m\e[33m";
     test_one("push_back", test_pushback);
 	test_one("push_front", test_pushfront);
 	test_one("push_front", test_pushfront);
@@ -778,4 +865,9 @@ void test_list()
 	test_one("remove_if", test_remove_if);
 	test_one("unique", test_unique);
 	test_one("unique_binary_predicate", test_unique_binary_predicate);
+	test_one("reverse", test_reverse);
+	test_one("merge", test_merge);
+	test_one("merge_cmp", test_merge_comp);
+	test_one("sort", test_sort);
+	test_one("sort_cmp", test_sort_comp);
 }
