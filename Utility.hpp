@@ -4,6 +4,97 @@
 
 namespace ft
 {
+
+	template <typename T1, typename T2>
+	struct Pair
+	{
+		typedef T1 first_type;
+		typedef T2 second_type;
+
+		T1 first;
+		T2 second;
+
+		Pair():first(), second()
+		{
+		}
+
+		~Pair()
+		{
+		}
+
+		Pair(const T1& x, const T2& y): first(x), second(y)
+		{
+		}
+
+		template <typename U1, typename U2>
+		Pair(const Pair<U1, U2>& c): first(c.first), second(c.second)
+		{
+		}
+
+		Pair(const Pair<T1, T2>& c): first(c.first), second(c.second)
+		{
+		}
+
+		template <typename U1, typename U2>
+		Pair<T1, T2>& operator=(const Pair<U1, U2>& c)
+		{
+			first = c.first;
+			second = c.second;
+			return *this;
+		}
+
+		Pair<T1, T2>& operator=(const Pair<U1, U2>& c)
+		{
+			first = c.first;
+			second = c.second;
+			return *this;
+		}
+	};
+
+	template <typename T1, typename T2>
+	Pair<T1, T2> make_pair(T1 t, T2 u)
+	{
+		return Pair<T1, T2>(t, u);
+	}
+
+	template <typename T1, typename T2>
+	bool operator==(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return lhs.first == rhs.first && lhs.second == rhs.second;
+	}
+
+	template <typename T1, typename T2>
+	bool operator<(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return lhs.first < rhs.first && lhs.second < rhs.second;
+	}
+
+	template <typename T1, typename T2>
+	bool operator!=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <typename T1, typename T2>
+	bool operator<=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs > rhs);
+	}
+
+	template <typename T1, typename T2>
+	bool operator>(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return rhs < lhs;
+	}
+
+	template <typename T1, typename T2>
+	bool operator>=(const Pair<T1, T2>& lhs, const Pair<T1, T2>& rhs)
+	{
+		return !(lhs < rhs);
+	}
+
+	//Iterator tags
+
     struct InputIteratorTag {};
 	struct OutputIteratorTag {};
 	struct ForwardIteratorTag: public InputIteratorTag {};
