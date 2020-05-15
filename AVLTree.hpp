@@ -153,151 +153,151 @@ namespace ft
                 }
 
                 static void rotate_left(node** target)
-			{
-				node* y = (*target)->right;
-				node* parent = (*target)->parent;
-				(*target)->parent = y;
-				y->parent = parent;
-				(*target)->right = y->left;
-				y->left = *target;
-				(*target)->height = max(
-					(*target)->left ? (*target)->left->height : -1,
-					(*target)->right ? (*target)->right->height : -1
-				) + 1;
-				*target = y;
-				y->height = max(
-					y->left ? y->left->height : -1,
-					y->right ? y->right->height : -1
-				) + 1;
-			}
-
-			static void rotate_right(node** target)
-			{
-				node* y = (*target)->left;
-				node* parent = (*target)->parent;
-				(*target)->parent = y;
-				y->parent = parent;
-				(*target)->left = y->right;
-				y->right = *target;
-				(*target)->height = max(
-					(*target)->left ? (*target)->left->height : -1,
-					(*target)->right ? (*target)->right->height : -1
-				) + 1;
-				*target = y;
-				y->height = max(
-					y->left ? y->left->height : -1,
-					y->right ? y->right->height : -1
-				) + 1;
-			}
-
-            static void deep_free(node*& n)
-			{
-				if (!n)
-					return;
-				deep_free(n->left);
-				deep_free(n->right);
-				delete n;
-				n = NULL;
-			}
-
-            static void print_rec(node* n, int indent = 1)
-			{
-				std::stringstream ss;
-				for (int i = 0; i < indent; i++) ss << ">>";
-				if (!n)
 				{
-					printf("%s NULL\n", ss.str().c_str());
-					return;
-				}
-				printf("%s El is %d (h = %d, balance = %d)\n", ss.str().c_str(), n->el.first, n->height, balance_factor(n));
-				printf("%s Left\n", ss.str().c_str());
-				print_rec(n->left, indent + 1);
-				printf("%s Right\n", ss.str().c_str());
-				print_rec(n->right, indent + 1);
-			}
-
-            static int max(int a, int b)
-			{
-				return a > b ? a : b;
-			}
-
-			static node* deep_cpy(node *parent, node* n)
-			{
-				if (!n)
-					return NULL;
-				node* cpy = new node(n->el, parent, NULL, NULL, n->height);
-				cpy->left = deep_cpy(cpy, n->left);
-				cpy->right = deep_cpy(cpy, n->right);
-				return cpy;
-			}
-
-			void erase_rebalance(node *parent)
-			{
-				for (node* p = parent; p; p = p->parent)
-				{
-					p->height = max(
-						p->left ? p->left->height : -1,
-						p->right ? p->right->height : -1
+					node* y = (*target)->right;
+					node* parent = (*target)->parent;
+					(*target)->parent = y;
+					y->parent = parent;
+					(*target)->right = y->left;
+					y->left = *target;
+					(*target)->height = max(
+						(*target)->left ? (*target)->left->height : -1,
+						(*target)->right ? (*target)->right->height : -1
 					) + 1;
+					*target = y;
+					y->height = max(
+						y->left ? y->left->height : -1,
+						y->right ? y->right->height : -1
+					) + 1;
+				}
 
-					if (balance_factor(p) <= -2 || balance_factor(p) >= 2)
+				static void rotate_right(node** target)
+				{
+					node* y = (*target)->left;
+					node* parent = (*target)->parent;
+					(*target)->parent = y;
+					y->parent = parent;
+					(*target)->left = y->right;
+					y->right = *target;
+					(*target)->height = max(
+						(*target)->left ? (*target)->left->height : -1,
+						(*target)->right ? (*target)->right->height : -1
+					) + 1;
+					*target = y;
+					y->height = max(
+						y->left ? y->left->height : -1,
+						y->right ? y->right->height : -1
+					) + 1;
+				}
+
+            	static void deep_free(node*& n)
+				{
+					if (!n)
+						return;
+					deep_free(n->left);
+					deep_free(n->right);
+					delete n;
+					n = NULL;
+				}
+
+            	static void print_rec(node* n, int indent = 1)
+				{
+					std::stringstream ss;
+					for (int i = 0; i < indent; i++) ss << ">>";
+					if (!n)
 					{
-						node* x = p;
-						node* y = x->left->height > x->right->height ?
-							x->left : x->right;
-						node* z;
-						if (y->left->height == y->right->height)
-							z = y == x->left ? y->left : y->right;
+						printf("%s NULL\n", ss.str().c_str());
+						return;
+					}
+					printf("%s El is %d (h = %d, balance = %d)\n", ss.str().c_str(), n->el.first, n->height, balance_factor(n));
+					printf("%s Left\n", ss.str().c_str());
+					print_rec(n->left, indent + 1);
+					printf("%s Right\n", ss.str().c_str());
+					print_rec(n->right, indent + 1);
+				}
+	
+            	static int max(int a, int b)
+				{
+					return a > b ? a : b;
+				}
+	
+				static node* deep_cpy(node *parent, node* n)
+				{
+					if (!n)
+						return NULL;
+					node* cpy = new node(n->el, parent, NULL, NULL, n->height);
+					cpy->left = deep_cpy(cpy, n->left);
+					cpy->right = deep_cpy(cpy, n->right);
+					return cpy;
+				}
+	
+				void erase_rebalance(node *parent)
+				{
+					for (node* p = parent; p; p = p->parent)
+					{
+						p->height = max(
+							p->left ? p->left->height : -1,
+							p->right ? p->right->height : -1
+						) + 1;
+	
+						if (balance_factor(p) <= -2 || balance_factor(p) >= 2)
+						{
+							node* x = p;
+							node* y = x->left->height > x->right->height ?
+								x->left : x->right;
+							node* z;
+							if (y->left->height == y->right->height)
+								z = y == x->left ? y->left : y->right;
+							else
+								z = y->left->height > y->right->height ? y->left : y->right;
+	
+							if (y == x->left)
+							{
+								if (z == x->left->right)
+									rotate_left(y);
+								rotate_right(x);
+							}
+							else if (y == x->right)
+							{
+								if (z == x->right->left)
+									rotate_left(y);
+								rotate_right(x);
+							}
+						}
+					}
+				}
+
+				void insert_rebalance(node *inserted)
+				{
+					// go back to the root and update heights
+					for (node* n = inserted; n; n = n->parent)
+					{
+						n->height = max(
+							n->left ? n->left->height : -1,
+							n->right ? n->right->height : -1
+						) + 1;
+						node** x;
+						if (!n->parent)
+							x = &_root;
 						else
-							z = y->left->height > y->right->height ? y->left : y->right;
+							x = n == n->parent->left ? &n->parent->left : &n->parent->right;
 
-						if (y == x->left)
+						if (balance_factor(n) < -1)
 						{
-							if (z == x->left->right)
-								rotate_left(y);
-							rotate_right(x);
+							if (balance_factor(n->right) > 0)
+								rotate_right(&(*x)->right);
+							rotate_left(x);
+							break;
 						}
-						else if (y == x->right)
+						else if (balance_factor(n) > 1)
 						{
-							if (z == x->right->left)
-								rotate_left(y);
+							if (balance_factor(n->left) < 0)
+								rotate_left(&(*x)->left);
 							rotate_right(x);
+							break;
 						}
 					}
 				}
-			}
-
-			void insert_rebalance(node *inserted)
-			{
-				// go back to the root and update heights
-				for (node* n = inserted; n; n = n->parent)
-				{
-					n->height = max(
-						n->left ? n->left->height : -1,
-						n->right ? n->right->height : -1
-					) + 1;
-					node** x;
-					if (!n->parent)
-						x = &_root;
-					else
-						x = n == n->parent->left ? &n->parent->left : &n->parent->right;
-
-					if (balance_factor(n) < -1)
-					{
-						if (balance_factor(n->right) > 0)
-							rotate_right(&(*x)->right);
-						rotate_left(x);
-						break;
-					}
-					else if (balance_factor(n) > 1)
-					{
-						if (balance_factor(n->left) < 0)
-							rotate_left(&(*x)->left);
-						rotate_right(x);
-						break;
-					}
-				}
-			}
 
 		public:
 				typedef E value_type;
