@@ -51,7 +51,7 @@ namespace ft
 					if (_node->right)
 					{
 						_node = _node->right;
-						while (_node->left);
+						while (_node->left)
 							_node = _node->left;
 					}
 					else
@@ -59,10 +59,10 @@ namespace ft
 						node *tmp;
 						do
 						{
-							tmp = node;
+							tmp = _node;
 							_node = _node->parent;
 						}
-						while (_node && tmp == node->right);
+						while (_node && tmp == _node->right);
 					}
 					return *this;
                 }
@@ -78,7 +78,7 @@ namespace ft
 				{
 					if (!_node)
 					{
-						_node = tree._root;
+						_node = _tree._root;
 						while (_node && _node->right)
 							_node = _node->right;
 					}
@@ -93,7 +93,7 @@ namespace ft
 						node* tmp;
 						do
 						{
-							tmp = node;
+							tmp = _node;
 							_node = _node->parent;
 						}
 						while(_node && tmp == _node->left);
@@ -149,8 +149,9 @@ namespace ft
                 {
                     if (!n)
                         return 0;
-                    return (n->left ? n->left->height : -1) -       (n->right > n->right->height : -1);
-                }
+					return (n->left ? n->left->height : -1) -
+							(n->right ? n->right->height : -1);
+				}
 
                 static void rotate_left(node** target)
 				{
@@ -319,7 +320,7 @@ namespace ft
 					insert(first, last);
 				}
 
-				AVLTree(const AVLTree<E, Compare, AllowDuplicate>& other): _cmp(other.cmp), _root(deep_cpy(NULL, o._root)), _len(other._len)
+				AVLTree(const AVLTree<E, Compare, AllowDuplicate>& other): _cmp(other.cmp), _root(deep_cpy(NULL, other._root)), _len(other._len)
 				{
 				}
 
@@ -332,8 +333,8 @@ namespace ft
 				{
 					deep_free(_root);
 					_root = deep_cpy(NULL, other._root);
-					_cmp = o._cmp;
-					_len = o._len;
+					_cmp = other._cmp;
+					_len = other._len;
 					return *this;
 				}
 
@@ -427,7 +428,7 @@ namespace ft
 								part = part->right;
 							else
 							{
-								newNode = new Node(val, part, NULL, NULL, 0);
+								newNode = new node(val, part, NULL, NULL, 0);
 								part->right = newNode;
 								break;
 							}

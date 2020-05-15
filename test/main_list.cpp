@@ -789,7 +789,6 @@ static void test_merge_comp()
 	ConstrCounter array[5] = { 0, 1, 2, 3, 4 };
 	ConstrCounter array1[5] = { 5, 10, 7, 9, 8 };
 
-
 	ft::List<ConstrCounter> lst(array1, array1 + 5);
 	ft::List<ConstrCounter> lst1(array, array + 5);
 	lst.merge(lst1, std::greater<ConstrCounter>());
@@ -836,7 +835,7 @@ static void test_sort_comp()
 
 void test_list()
 {
-	std::cout << "\e[1m\e[33m";
+	std::cout << "\e[1m\e[33m \nTesting List\n\n";
     test_one("push_back", test_pushback);
 	test_one("push_front", test_pushfront);
 	test_one("push_front", test_pushfront);

@@ -43,8 +43,7 @@ namespace ft
 			return *this;
 		}
 
-		Pair<T1, T2>& operator=(const Pair<U1, U2>& c)
-		{
+		Pair<T1, T2>& operator=(const Pair<T1, T2>& c)		{
 			first = c.first;
 			second = c.second;
 			return *this;

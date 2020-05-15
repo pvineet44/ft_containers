@@ -6,7 +6,7 @@
 
 namespace ft
 {
-    template <template Key, template T, template Compare>
+    template <typename Key, typename T, typename Compare>
     class Map
     {
         public:
@@ -27,8 +27,6 @@ namespace ft
                 typedef Compare key_compare;
                 typedef T& reference;
                 typedef const T& const_reference;
-                typedef T* pointer;
-                typedef const T* const_reference;
                 typedef T* pointer;
                 typedef const T* const_pointer;
                 typedef AVLTreeIterator<value_type, value_compare, false> iterator;
@@ -207,7 +205,7 @@ namespace ft
             return _tree.find(keys_eq_predicate, make_pair(k, mapped_type()));
         }
         
-        const_iterator find(const key_type& k)
+        const_iterator find(const key_type& k) const
         {
             return _tree.find(keys_eq_predicate, make_pair(k, mapped_type()));
         }
@@ -219,7 +217,7 @@ namespace ft
 		const_iterator upper_bound(const key_type& k) const;
 
 		Pair<iterator, iterator> equal_range(const key_type& k);
-		Pair<const_iterator, const_iterator> equal_range(constkey_type& k) const;
+		Pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
     };
 }
 

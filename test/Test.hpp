@@ -1,6 +1,7 @@
 #ifndef TEST_HPP
 # define TEST_HPP
 # include "../List.hpp"
+# include "../Map.hpp"
 # include <iostream>
 # include <assert.h>
 # include <sstream>
@@ -32,4 +33,5 @@ bool operator>=(const ConstrCounter& lhs, const ConstrCounter& rhs);
 void test_one(std::string name, void (&fn)());
 
 void test_list();
+void test_map();
 #endif
