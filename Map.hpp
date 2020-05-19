@@ -3,10 +3,20 @@
 
 # include "Utility.hpp"
 # include "AVLTree.hpp"
+# include <iostream>
+
 
 namespace ft
 {
-	template <typename Key, typename T, typename Compare>
+
+
+	struct classcomp {
+		bool operator() (const char& lhs, const char& rhs) const
+		{return lhs<rhs;}
+	};
+
+
+	template <class Key, class T, class Compare = ft::less<Key>>
 	class Map
 	{
 		public:
@@ -45,7 +55,6 @@ namespace ft
 					{
 					}
 
-					value_compare& operator=(const value_compare& o);
 			public:
 					typedef bool result_type;
 					typedef Pair<const Key,T> first_argument_type;
@@ -57,6 +66,12 @@ namespace ft
 
 					value_compare(const value_compare& o):_cmp(o._cmp)
 					{
+					}
+
+					value_compare& operator=(const value_compare& o)
+					{
+						_cmp = o._cmp;
+						return (*this);
 					}
 
 					bool operator()(const Pair<const Key, T>& x, const Pair<const Key, T>& y) const
@@ -88,6 +103,7 @@ namespace ft
 		Map<Key, T, Compare> &operator=(const Map<Key, T, Compare>& o)
 		{
 			_tree = o._tree;
+			return *this;
 		}
 
 		iterator begin()
@@ -176,7 +192,11 @@ namespace ft
 			_tree.erase(position);
 		}
 
-		size_type erase(const key_type& k);
+		size_type erase(const key_type& k)
+		{
+			_tree.erase(find(k));
+			return _tree.size();
+		}
 
 		void erase(iterator first, iterator last)
 		{

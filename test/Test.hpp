@@ -7,6 +7,7 @@
 # include <sstream>
 # include <cmath>
 # include <unistd.h>
+# include <map>
 
 class ConstrCounter
 {

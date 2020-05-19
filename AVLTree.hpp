@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 
 
 namespace ft
@@ -35,6 +36,8 @@ namespace ft
 			typedef E* pointer;
 			typedef E& reference;
 			typedef BidirectionalIteratorTag iterator_category;
+
+			AVLTreeIterator() : AVLTreeIterator<E, Compare, AllowDuplicate>(NULL, NULL){}
 
 			AVLTreeIterator(const AVLTreeIterator<E, Compare, AllowDuplicate>& other):
 				_tree(other._tree), _node(other._node)
@@ -258,7 +261,6 @@ namespace ft
 						p->left ? p->left->height : -1,
 						p->right ? p->right->height : -1
 					) + 1;
-
 					if (balance_factor(p) <= -2 || balance_factor(p) >= 2)
 					{
 						node* x = p;
@@ -273,14 +275,14 @@ namespace ft
 						if (y == x->left)
 						{
 							if (z == x->left->right)
-								rotate_left(y);
-							rotate_right(x);
+								rotate_left(&y);
+							rotate_right(&x);
 						}
 						else if (y == x->right)
 						{
 							if (z == x->right->left)
-								rotate_left(y);
-							rotate_right(x);
+								rotate_left(&y);
+							rotate_right(&x);
 						}
 					}
 				}
@@ -341,7 +343,7 @@ namespace ft
 			}
 
 			AVLTree(const AVLTree<E, Compare, AllowDuplicate>& o):
-				_cmp(o.cmp), _root(deep_cpy(NULL, o._root)), _len(o._len)
+				_cmp(o._cmp), _root(deep_cpy(NULL, o._root)), _len(o._len)
 			{
 			}
 
@@ -415,7 +417,10 @@ namespace ft
 				return _len;
 			}
 
-			size_type max_size() const;
+			size_type max_size() const
+			{
+				return static_cast<size_type>(-1 / sizeof(node));
+			}
 
 			Pair<iterator, bool> insert(const value_type& val)
 			{
@@ -477,41 +482,124 @@ namespace ft
 				}
 			}
 
+			void transplant(node* u, node *v)
+			{
+				if (u->parent == NULL) //u is root
+					_root = v;
+				else if (u == u->parent->left) // u is left child
+					u->parent->left = v;
+				else //u is right child
+					u->parent->right = v;
+
+				if (v != NULL)
+					v->parent = u->parent;
+			}
+
+			void avl_delete_fixup(node *n)
+			{
+				node *p = n;
+				while (p != NULL)
+				{
+					p->height = 1 + max((p->left?p->left->height:-1), (p->right?p->right->height:-1));
+
+					if (balance_factor(p) <= -2 || balance_factor(p) >= 2) //grandparent is unbalanced
+					{
+						node *x, *y, *z;
+						x = p;
+
+						//taller child of x will be y
+						if ((x->left?x->left->height:-1) > (x->right?x->right->height:-1))
+							y = x->left;
+						else
+							y = x->right;
+
+						//taller child of y will be z
+						if ((y->left?y->left->height:-1) > (y->right?y->right->height:-1))
+							z = y->left;
+						else if((y->left?y->left->height:-1) < (y->right?y->right->height:-1))
+							z = y->right;
+						else //same height, go for single rotation
+						{
+							if (y == x->left)
+								z = y->left;
+							else
+								z = y->right;
+						}
+
+						if(y == x->left)
+						{
+							if (z == (x->left?x->left->left:x->left)) // case 1
+								rotate_right(&x);
+							else if (z == (x->left?x->left->right:x->left)) // case 3
+							{
+								rotate_left(&y);
+								rotate_right(&x);
+							}
+						}
+						else if (y == x->right)
+						{
+							if (z == (x->right?x->right->right:x->right)) // case 2
+								rotate_left(&x);
+							else if (z == (x->right?x->right->left:x->right)) // case 4
+							{
+								rotate_right(&y);
+								rotate_left(&x);
+							}
+						}
+					}
+					p = p->parent;
+				}
+			}
+
+			node* minimum(node* x)
+			{
+				while(x->left != NULL)
+					x = x->left;
+				return x;
+			}
+
 			void erase(iterator position)
 			{
-				node* n = position._node;
-
-				node** x;
-				if (!n->parent)
-					x = &_root;
-				else
-					x = n == n->parent->left ? &n->parent->left : &n->parent->right;
-				
-				if (!n->left && !n->right) // node is a leaf
-					*x = NULL;
-				else if ((n->left || n->right) && !(n->left && n->right)) // node has one child
-					*x = n->left ? n->left : n->right;
-				else // node has two children
+				node* z = position._node;
+				if (z->left == NULL)
 				{
-					node *succ = n->right;
-					while (succ->left)
-						succ = succ->left;
-					succ->parent->left = NULL;
-					succ->left = n->left;
-					succ->right = n->right;
-					*x = succ;
+					transplant(z, z->right);
+					if (z->right != NULL)
+						avl_delete_fixup(z->right);
+					delete z;
+					_len--;
 				}
-
-				erase_rebalance(n->parent);
-
-				delete n;
-				_len--;
+				else if (z->right == NULL)
+				{
+					transplant(z, z->left);
+					if (z->left != NULL)
+						avl_delete_fixup(z->left);
+					delete z;
+					_len--;
+				}
+				else
+				{
+					node* y = minimum(z->right);
+					if (y->parent != z)
+					{
+						transplant(y, y->right);
+						y->right = z->right;
+						y->right->parent = y;
+					}
+					transplant(z, y);
+					y->left = z->left;
+					y->left->parent = y;
+					if (y != NULL)
+						avl_delete_fixup(y);
+					delete z;
+					_len--;
+				}
+				
 			}
 
 			void erase(iterator first, iterator last)
 			{
-				for (; first != last; ++first)
-					erase(*first);
+				//Implement using vector
 			}
 
 			void swap(AVLTree<E, Compare, AllowDuplicate>& x)
