@@ -599,6 +599,8 @@ namespace ft
 
 			void erase(iterator first, iterator last)
 			{
+				(void)first;
+				(void)last;
 				//Implement using vector
 			}
 

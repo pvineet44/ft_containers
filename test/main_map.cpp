@@ -387,6 +387,8 @@ static void test_erase()
 	//delete using first, last iterator
 	ft::Map<int,int>::iterator ft_it1 = ft_mymap.find(2);
 	std::map<int,int>::iterator st_it1 = st_mymap.find(2);
+	(void)ft_it1;
+	(void)st_it1;
 
 	// ft_mymap.erase(ft_it1, ft_mymap.end());
 	// st_mymap.erase(st_it1, st_mymap.end());
@@ -394,6 +396,79 @@ static void test_erase()
 
 	// ft_mymap.erase(ft_mymap.begin(), ft_it1);
 	// st_mymap.erase(st_mymap.begin(), st_it1);
+}
+
+static void test_swap()
+{
+	ft::Map<char,int> ft_foo, ft_bar;
+	std::map<char,int> st_foo, st_bar;
+
+	ft_foo['x']=100;
+  	ft_foo['y']=200;
+
+  	ft_bar['a']=11;
+  	ft_bar['b']=22;
+  	ft_bar['c']=33;
+
+	st_foo['x']=100;
+  	st_foo['y']=200;
+
+  	st_bar['a']=11;
+  	st_bar['b']=22;
+  	st_bar['c']=33;
+	
+	ft_foo.swap(ft_bar);
+	st_foo.swap(st_bar);
+
+	assert(ft_foo.size() == 3);
+	assert(st_foo.size() == 3);
+
+	assert(ft_bar.size() == 2);
+	assert(st_bar.size() == 2);
+
+	assert(ft_bar['x'] == 100);
+	assert(st_bar['x'] == 100);
+	assert(st_bar['y'] == 200);
+	assert(st_bar['y'] == 200);
+
+	assert(ft_foo['a'] == 11);
+	assert(st_foo['a'] == 11);
+	assert(ft_foo['b'] == 22);
+	assert(st_foo['b'] == 22);
+	assert(ft_foo['c'] == 33);
+	assert(st_foo['c'] == 33);
+	
+}
+
+static void test_clear()
+{
+	ft::Map<int,int> ft_mymap;
+	std::map<int,int> st_mymap;
+	
+	
+	// insert some values:
+  	ft_mymap[0] = 10;
+  	ft_mymap[1] = 11;
+  	ft_mymap[2] = 12;
+  	ft_mymap[3] = 13;
+  	ft_mymap[4] = 14;
+  	ft_mymap[5] = 15;
+
+	st_mymap[0] = 10;
+	st_mymap[1] = 11;
+	st_mymap[2] = 12;
+	st_mymap[3] = 13;
+	st_mymap[4] = 14;
+	st_mymap[5] = 15;
+
+	assert(ft_mymap.size() == 6);
+	assert(st_mymap.size() == 6);
+
+	ft_mymap.clear();
+	st_mymap.clear();
+
+	assert(ft_mymap.size() == 0);
+	assert(st_mymap.size() == 0);
 }
 
 void test_map()
@@ -410,4 +485,6 @@ void test_map()
 		test_one("insert", test_insert);
 		test_one("insert", test_insert);
 		test_one("erase", test_erase);
+		test_one("swap", test_swap);
+		test_one("clear", test_clear);
 }
