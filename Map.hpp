@@ -45,6 +45,7 @@ namespace ft
 				typedef ReverseIterator<const_iterator>     const_reverse_iterator;
 				typedef std::ptrdiff_t difference_type;
 				typedef size_t size_type;
+				typedef AVLTreeNode<Pair<const Key, T> > node;
 
 		class value_compare
 		{
@@ -215,12 +216,12 @@ namespace ft
 
 		key_compare key_comp() const
 		{
-			return _tree._cmp._cmp;
+			return key_compare();
 		}
 
 		value_compare value_comp() const
 		{
-			return _tree._cmp;
+			return value_compare(key_compare());
 		}
 
 		iterator find(const key_type& k)
@@ -233,14 +234,134 @@ namespace ft
 			return _tree.find(keys_eq_predicate, make_pair(k, mapped_type()));
 		}
 
-		size_type count(const key_type& k) const;
-		iterator lowest_bound(const key_type& k);
-		const_iterator lowest_bound(const key_type& k) const;
-		iterator upper_bound(const key_type& k);
-		const_iterator upper_bound(const key_type& k) const;
+		size_type count(const key_type& k) const
+		{
+			node* tmp = _tree.getRoot();
+			key_compare cmp = key_comp();
+			while (tmp)
+			{
+				if (tmp->el.first == k)
+					return (1);
+				if (cmp(k, tmp->el.first))
+					tmp = tmp->left;
+				else
+					tmp = tmp->right;
+			}
+			return (0);
+		}
+		iterator lower_bound(const key_type& k)
+		{
+			node *tmp = _tree.getRoot();
+			node *ptmp = NULL;
+			key_compare cmp = key_comp();
+			if (tmp)
+			{
+				while(tmp)
+				{
+					ptmp = tmp;
+					if (tmp->el.first == k)
+						return iterator(&_tree, tmp);
+					if (cmp(k, tmp->el.first))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				while(ptmp)
+				{
+					if (!cmp(k, ptmp->el.first)) //k > el.first
+						ptmp = ptmp->parent;
+					else
+						return (iterator(&_tree, ptmp));
+				}
+			}
+			return (end());
+		}
+		const_iterator lower_bound(const key_type& k) const
+		{
+			node *tmp = _tree.getRoot();
+			node *ptmp = NULL;
+			key_compare cmp = key_comp();
+			if (tmp)
+			{
+				while(tmp)
+				{
+					ptmp = tmp;
+					if (tmp->el.first == k)
+						return (const_iterator(&_tree, tmp));
+					if (cmp(k, tmp->el.first))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				while(ptmp)
+				{
+					if (!cmp(k, ptmp->el.first)) //k > el.first
+						ptmp = ptmp->parent;
+					else
+						return (const_iterator(&_tree, ptmp));
+				}
+			}
+			return (end());
+		}
+		iterator upper_bound(const key_type& k)
+		{
+			node* tmp = _tree.getRoot();
+			node* ptmp = NULL;
+			key_compare cmp = key_comp();
+			if (tmp)
+			{
+				while (tmp)
+				{
+					ptmp = tmp;
+					if (cmp(k, tmp->el.first))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				while (ptmp)
+				{
+					if (!cmp(k, ptmp->el.first)) // k > el.first
+						ptmp = ptmp->parent;
+					else
+						return iterator(&_tree, ptmp);
+				}
+			}
+			return (end());
+		}
+		const_iterator upper_bound(const key_type& k) const
+		{
+			node* tmp = _tree.getRoot();
+			node* ptmp = NULL;
+			key_compare cmp = key_comp();
+			if (tmp)
+			{
+				while (tmp)
+				{
+					ptmp = tmp;
+					if (cmp(k, tmp->el.first))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				while (ptmp)
+				{
+					if (!cmp(k, ptmp->el.first)) // k > el.first
+						ptmp = ptmp->parent;
+					else
+						return const_iterator(&_tree, ptmp);
+				}
+			}
+			return (end());
+		}
 
-		Pair<iterator, iterator> equal_range(const key_type& k);
-		Pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+		Pair<iterator, iterator> equal_range(const key_type& k)
+		{
+			return make_pair(lower_bound(k), upper_bound(k));
+		}
+		Pair<const_iterator, const_iterator> equal_range(const key_type& k) const
+		{
+			return make_pair(lower_bound(k), upper_bound(k));
+		}
 	};
 }
 

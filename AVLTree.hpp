@@ -39,6 +39,7 @@ namespace ft
 
 			AVLTreeIterator() : AVLTreeIterator<E, Compare, AllowDuplicate>(NULL, NULL){}
 
+			AVLTreeIterator(tree* tree, node* node) : _tree(*tree), _node(node) {}
 			AVLTreeIterator(const AVLTreeIterator<E, Compare, AllowDuplicate>& other):
 				_tree(other._tree), _node(other._node)
 			{
@@ -147,20 +148,11 @@ namespace ft
 	template <typename E, typename Compare, bool AllowDuplicate>
 	class AVLTree
 	{
-		private:
-			struct node
-			{
-				E el;
-				node* parent;
-				node* right;
-				node* left;
-				int height;
 
-				node(E el_, node* parent_, node* right_, node* left_, int height_):
-					el(el_), parent(parent_), right(right_), left(left_), height(height_)
-				{
-				}
-			};
+		public:
+			typedef AVLTreeNode<E> node;
+		
+		private:
 
 			Compare _cmp;
 			node* _root;
@@ -602,6 +594,11 @@ namespace ft
 				(void)first;
 				(void)last;
 				//Implement using vector
+			}
+
+			node* getRoot() const
+			{
+				return this->_root;
 			}
 
 			void swap(AVLTree<E, Compare, AllowDuplicate>& x)

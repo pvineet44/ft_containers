@@ -835,7 +835,7 @@ static void test_sort_comp()
 
 void test_list()
 {
-	std::cout << "\e[1m\e[33m \nTesting List\n\n";
+	std::cout << "\e[1m\e[33m \n<=== Testing List ===>\n\n";
     test_one("push_back", test_pushback);
 	test_one("push_front", test_pushfront);
 	test_one("push_front", test_pushfront);

@@ -10,7 +10,19 @@ namespace ft
 			bool operator()(const T &x, const T &y) const { return x < y; }
 		};
 
-
+		template<typename E>
+		struct AVLTreeNode
+		{
+			E el;
+			AVLTreeNode* parent;
+			AVLTreeNode* right;
+			AVLTreeNode* left;
+			int height;
+			AVLTreeNode(E el_, AVLTreeNode* parent_, AVLTreeNode* right_, AVLTreeNode* left_, int height_):
+				el(el_), parent(parent_), right(right_), left(left_), height(height_)
+			{
+			}
+		};
 	template <typename T1, typename T2>
 	struct Pair
 	{

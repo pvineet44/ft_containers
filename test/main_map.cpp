@@ -471,9 +471,231 @@ static void test_clear()
 	assert(st_mymap.size() == 0);
 }
 
+static void	test_key_comp()
+{
+	ft::Map<char, int> ft_mymap;
+	std::map<char, int> st_mymap;
+
+	ft::Map<char,int>::key_compare ft_mycomp = ft_mymap.key_comp();
+	std::map<char,int>::key_compare st_mycomp = st_mymap.key_comp();
+	(void)ft_mycomp;
+	ft_mymap['a']=100;
+  	ft_mymap['b']=200;
+ 	ft_mymap['c']=300;
+
+	st_mymap['a']=100;
+  	st_mymap['b']=200;
+ 	st_mymap['c']=300;
+
+	char ft_highest = ft_mymap.rbegin()->first;
+	char st_highest = st_mymap.rbegin()->first;
+	(void)ft_highest;
+	ft::Map<char,int>::iterator ft_it = ft_mymap.begin();
+	(void)ft_it;
+	std::map<char,int>::iterator st_it = st_mymap.begin();
+
+	do{
+		assert(ft_it->first == st_it->first);
+		assert(ft_it->second == st_it->second);
+  		} while (st_mycomp((*st_it++).first, st_highest) &&  ft_mycomp((*ft_it++).first, ft_highest));
+}
+
+static void test_value_comp()
+{
+	ft::Map<char, int> ft_mymap;
+	std::map<char, int> st_mymap;
+
+	ft_mymap['a']=100;
+  	ft_mymap['b']=200;
+ 	ft_mymap['c']=300;
+
+	st_mymap['a']=100;
+  	st_mymap['b']=200;
+ 	st_mymap['c']=300;
+
+	ft::Pair<char, int> ft_highest = *ft_mymap.rbegin();
+	std::pair<char, int> st_highest = *st_mymap.rbegin();
+	
+	ft::Map<char,int>::iterator ft_it = ft_mymap.begin();
+	std::map<char,int>::iterator st_it = st_mymap.begin();
+
+	do{
+		assert(ft_it->first == st_it->first);
+		assert(ft_it->second == st_it->second);
+  		} while (st_mymap.value_comp()(*st_it++, st_highest) &&  ft_mymap.value_comp()(*ft_it++, ft_highest));
+}
+
+static void	test_find()
+{
+	ft::Map<char,int> ft_mymap;
+	std::map<char,int> st_mymap;
+	
+
+	ft_mymap['a']=50;
+	ft_mymap['b']=100;
+	ft_mymap['c']=150;
+	ft_mymap['d']=200;
+
+	st_mymap['a']=50;
+	st_mymap['b']=100;
+	st_mymap['c']=150;
+	st_mymap['d']=200;
+
+	ft::Map<char,int>::iterator ft_it = ft_mymap.find('b');
+	std::map<char,int>::iterator st_it = st_mymap.find('b');
+
+	if (ft_it != ft_mymap.end())
+    	ft_mymap.erase(ft_it);
+
+	if (st_it != st_mymap.end())
+    	st_mymap.erase(st_it);
+
+	assert(ft_mymap.size() == 3);	
+	assert(st_mymap.size() == 3);
+
+	assert(ft_mymap['a'] == 50);
+	assert(st_mymap['a'] == 50);
+	assert(ft_mymap['c'] == 150);
+	assert(st_mymap['c'] == 150);
+	assert(ft_mymap['d'] == 200);
+	assert(st_mymap['d'] == 200);
+}
+
+static void	test_count()
+{
+	ft::Map<char,int> ft_mymap;
+	std::map<char,int> st_mymap;
+	char c;
+
+	st_mymap['a']=101;
+	st_mymap['c']=202;
+	st_mymap['f']=303;
+
+	ft_mymap['a']=101;
+	ft_mymap['c']=202;
+	ft_mymap['f']=303;
+
+	for (c = 'a'; c < 'h'; c++)
+  	{
+		  assert(ft_mymap.count(c) == st_mymap.count(c));
+  	}
+	
+	
+
+}
+
+static void test_lower_bound()
+{
+	ft::Map<char,int> ft_mymap;
+	std::map<char,int> st_mymap;
+
+	ft::Map<char,int>::iterator ft_it_low;
+	std::map<char,int>::iterator st_it_low;
+
+	ft_mymap['a']=20;
+  	ft_mymap['b']=40;
+  	ft_mymap['c']=60;
+  	ft_mymap['d']=80;
+  	ft_mymap['e']=100;
+
+	st_mymap['a']=20;
+  	st_mymap['b']=40;
+  	st_mymap['c']=60;
+  	st_mymap['d']=80;
+  	st_mymap['e']=100;
+
+	ft_it_low = ft_mymap.lower_bound('b');
+	st_it_low = st_mymap.lower_bound('b');
+	ft_mymap.erase(ft_it_low);
+	st_mymap.erase(st_it_low);
+
+	assert(ft_mymap.size() == 4);
+	assert(st_mymap.size() == 4);
+
+	assert(ft_mymap['a'] == 20);
+	assert(ft_mymap['c'] == 60);
+	assert(ft_mymap['d'] == 80);
+	assert(ft_mymap['e'] == 100);
+
+	assert(st_mymap['a'] == 20);
+	assert(st_mymap['c'] == 60);
+	assert(st_mymap['d'] == 80);
+	assert(st_mymap['e'] == 100);
+
+}
+
+static void	test_upper_bound()
+{
+	ft::Map<char,int> ft_mymap;
+	std::map<char,int> st_mymap;
+
+	ft::Map<char,int>::iterator ft_it_high;
+	std::map<char,int>::iterator st_it_high;
+
+	ft_mymap['a']=20;
+  	ft_mymap['b']=40;
+  	ft_mymap['c']=60;
+  	ft_mymap['d']=80;
+  	ft_mymap['e']=100;
+
+	st_mymap['a']=20;
+  	st_mymap['b']=40;
+  	st_mymap['c']=60;
+  	st_mymap['d']=80;
+  	st_mymap['e']=100;
+
+	ft_it_high = ft_mymap.upper_bound('d');
+	st_it_high = st_mymap.upper_bound('d');
+	ft_mymap.erase(ft_it_high);
+	st_mymap.erase(st_it_high);
+
+	assert(ft_mymap.size() == 4);
+	assert(st_mymap.size() == 4);
+
+	assert(ft_mymap['a'] == 20);
+	assert(ft_mymap['c'] == 60);
+	assert(ft_mymap['b'] == 40);
+	assert(ft_mymap['d'] == 80);
+
+	assert(st_mymap['a'] == 20);
+	assert(st_mymap['c'] == 60);
+	assert(st_mymap['b'] == 40);
+	assert(st_mymap['d'] == 80);
+
+}
+
+static void test_equal_range()
+{
+	ft::Map<char,int> ft_mymap;
+	std::map<char,int> st_mymap;
+
+	ft_mymap['a']=10;
+  	ft_mymap['b']=20;
+  	ft_mymap['c']=30;
+
+	st_mymap['a']=10;
+	st_mymap['b']=20;
+	st_mymap['c']=30;
+
+	std::pair<std::map<char,int>::iterator,std::map<char,int>::iterator> st_ret;
+
+	ft::Pair<ft::Map<char,int>::iterator,ft::Map<char,int>::iterator> ft_ret;
+
+
+	st_ret = st_mymap.equal_range('b');
+	ft_ret = ft_mymap.equal_range('b');
+
+	assert(st_ret.first->first == ft_ret.first->first);
+	assert(st_ret.first->second == ft_ret.first->second);
+
+	assert(st_ret.second->first == ft_ret.second->first);
+	assert(st_ret.second->second == ft_ret.second->second);
+
+}
+
 void test_map()
 {
-		std::cout << "\e[1m\e[34m \nTesting Map\n\n";
+		std::cout << "\e[1m\e[34m \n<=== Testing Map ===>\n\n";
 		test_one("constr", test_constr);
 		test_one("assign_copy", test_assign_copy);
 		test_one("begin", test_begin);
@@ -487,4 +709,11 @@ void test_map()
 		test_one("erase", test_erase);
 		test_one("swap", test_swap);
 		test_one("clear", test_clear);
+		test_one("key_comp", test_key_comp);
+		test_one("value_comp", test_value_comp);
+		test_one("find", test_find);
+		test_one("count", test_count);
+		test_one("lower_bound", test_lower_bound);
+		test_one("upper_bound", test_upper_bound);
+		test_one("equal_range", test_equal_range);
 }
