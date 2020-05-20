@@ -452,11 +452,110 @@ static void test_cmp_eq()
 	assert(q2 <= q);
 }
 
+static void test_constr()
+{
+	//default constructor
+	std::queue<ConstrCounter> st_queue;
+	ft::Queue<ConstrCounter> ft_queue;
+
+	st_queue.push(5);
+    st_queue.push(2);
+    st_queue.push(3);
+    st_queue.push(1);
+    st_queue.push(4);
+
+	ft_queue.push(5);
+	ft_queue.push(2);
+	ft_queue.push(3);
+	ft_queue.push(1);
+	ft_queue.push(4);
+
+	//copy constructor
+	std::queue<ConstrCounter> st_copy_queue(st_queue);
+	ft::Queue<ConstrCounter>  ft_copy_queue(ft_queue);
+
+	assert(ft_copy_queue.front().val == st_copy_queue.front().val);
+	ft_copy_queue.pop();st_copy_queue.pop();
+	assert(ft_copy_queue.front().val == st_copy_queue.front().val);
+	ft_copy_queue.pop();st_copy_queue.pop();
+	assert(ft_copy_queue.front().val == st_copy_queue.front().val);
+	ft_copy_queue.pop();st_copy_queue.pop();
+	assert(ft_copy_queue.front().val == st_copy_queue.front().val);
+	ft_copy_queue.pop();st_copy_queue.pop();
+	assert(ft_copy_queue.front().val == st_copy_queue.front().val);
+	ft_copy_queue.pop();st_copy_queue.pop();
+	assert(ft_copy_queue.empty() == st_copy_queue.empty());
+}
+
+static void test_relational_operator()
+{
+	std::queue<ConstrCounter> st_myqueue1;
+	ft::Queue<ConstrCounter> ft_myqueue1;
+
+	std::queue<ConstrCounter> st_myqueue2;
+	ft::Queue<ConstrCounter> ft_myqueue2;
+
+	assert(ft_myqueue1 == ft_myqueue2);
+	assert(st_myqueue1 == st_myqueue2);
+	
+	ft_myqueue1.push(ConstrCounter(1));
+	st_myqueue1.push(ConstrCounter(1));
+
+	assert(ft_myqueue1 >= ft_myqueue2);
+	assert(st_myqueue1 >= st_myqueue2);
+
+	assert(ft_myqueue1 > ft_myqueue2);
+	assert(st_myqueue1 > st_myqueue2);
+
+	assert(ft_myqueue2 <= ft_myqueue1);
+	assert(st_myqueue2 <= st_myqueue1);
+
+	assert(ft_myqueue2 < ft_myqueue1);
+	assert(st_myqueue2 < st_myqueue1);
+
+	assert(ft_myqueue2 != ft_myqueue1);
+	assert(st_myqueue2 != st_myqueue1);
+}
+
+static void test_empty()
+{
+	std::queue<ConstrCounter> st_myqueue;
+	ft::Queue<ConstrCounter> ft_myqueue;
+
+	assert(st_myqueue.empty());
+	assert(ft_myqueue.empty());
+}
+
+static void	test_size()
+{
+	std::queue<ConstrCounter> st_myqueue;
+	ft::Queue<ConstrCounter> ft_myqueue;
+
+	assert(st_myqueue.size() == 0);
+	assert(ft_myqueue.size() == 0);
+
+	ft_myqueue.push(ConstrCounter(1));
+	ft_myqueue.push(ConstrCounter(2));
+	ft_myqueue.push(ConstrCounter(3));
+
+	st_myqueue.push(ConstrCounter(1));
+	st_myqueue.push(ConstrCounter(2));
+	st_myqueue.push(ConstrCounter(3));
+
+	assert(st_myqueue.size() == 3);
+	assert(ft_myqueue.size() == 3);
+
+}
+
 void test_queue()
 {
     std::cout << "\e[1m\e[36m \n<=== Testing Queue ===>\n\n";
+	test_one("constr", test_constr);
+	test_one("empty", test_empty);
+	test_one("size", test_size);
 	test_one("push_pop", test_push_pop);
 	test_one("assign_copy", test_assign_copy);
 	test_one("swap", test_swap);
 	test_one("cmp_eq", test_cmp_eq);
+	test_one("relational_operators", test_relational_operator);
 }

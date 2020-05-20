@@ -1,14 +1,16 @@
 todo
 
 stack
-    constr
-    empty
+    constr -- DONE
+    empty -- DONE
     back
+    relational operator -- DONE
 
 queue
-    constr
-    empty
+    constr -- DONE
+    empty -- DONE
     back
+    relational operator -- DONE
 
 vector
     capacity

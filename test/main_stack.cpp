@@ -406,11 +406,111 @@ static void test_cmp_eq()
 	assert(st2 <= st);
 }
 
+static void	test_constructor()
+{
+	//default constructor
+	std::stack<ConstrCounter> st_mystack;
+	ft::Stack<ConstrCounter> ft_mystack;
+
+	assert(st_mystack.size() == 0);
+	assert(ft_mystack.size() == 0);
+
+	//copy constructor
+	ft_mystack.push(ConstrCounter(1));
+	ft_mystack.push(ConstrCounter(2));
+	ft_mystack.push(ConstrCounter(3));
+
+	st_mystack.push(ConstrCounter(1));
+	st_mystack.push(ConstrCounter(2));
+	st_mystack.push(ConstrCounter(3));
+
+	std::stack<ConstrCounter> st_copy_stack(st_mystack);
+	ft::Stack<ConstrCounter> ft_copy_stack(ft_mystack);
+
+	assert(ft_copy_stack.size() == 3);
+	assert(st_copy_stack.size() == 3);
+
+	assert(ft_copy_stack.top().val == st_copy_stack.top().val);
+	ft_copy_stack.pop();
+	st_copy_stack.pop();
+	assert(ft_copy_stack.top().val == st_copy_stack.top().val);
+	ft_copy_stack.pop();
+	st_copy_stack.pop();
+	assert(ft_copy_stack.top().val == st_copy_stack.top().val);
+	ft_copy_stack.pop();
+	st_copy_stack.pop();
+	assert(ft_copy_stack.empty() == st_copy_stack.empty());
+}
+
+static void test_empty()
+{
+	std::stack<ConstrCounter> st_mystack;
+	ft::Stack<ConstrCounter> ft_mystack;
+
+	assert(st_mystack.empty());
+	assert(ft_mystack.empty());
+}
+
+static void	test_size()
+{
+	std::stack<ConstrCounter> st_mystack;
+	ft::Stack<ConstrCounter> ft_mystack;
+
+	assert(st_mystack.size() == 0);
+	assert(ft_mystack.size() == 0);
+
+	ft_mystack.push(ConstrCounter(1));
+	ft_mystack.push(ConstrCounter(2));
+	ft_mystack.push(ConstrCounter(3));
+
+	st_mystack.push(ConstrCounter(1));
+	st_mystack.push(ConstrCounter(2));
+	st_mystack.push(ConstrCounter(3));
+
+	assert(st_mystack.size() == 3);
+	assert(ft_mystack.size() == 3);
+
+}
+
+static void test_relational_operator()
+{
+	std::stack<ConstrCounter> st_mystack1;
+	ft::Stack<ConstrCounter> ft_mystack1;
+
+	std::stack<ConstrCounter> st_mystack2;
+	ft::Stack<ConstrCounter> ft_mystack2;
+
+	assert(ft_mystack1 == ft_mystack2);
+	assert(st_mystack1 == st_mystack2);
+	
+	ft_mystack1.push(ConstrCounter(1));
+	st_mystack1.push(ConstrCounter(1));
+
+	assert(ft_mystack1 >= ft_mystack2);
+	assert(st_mystack1 >= st_mystack2);
+
+	assert(ft_mystack1 > ft_mystack2);
+	assert(st_mystack1 > st_mystack2);
+
+	assert(ft_mystack2 <= ft_mystack1);
+	assert(st_mystack2 <= st_mystack1);
+
+	assert(ft_mystack2 < ft_mystack1);
+	assert(st_mystack2 < st_mystack1);
+
+	assert(ft_mystack2 != ft_mystack1);
+	assert(st_mystack2 != st_mystack1);
+}
+
 void test_stack()
 {
     std::cout << "\e[1m\e[13m \n<=== Testing Stack ===>\n\n";
+	test_one("constr", test_constructor);
+	test_one("empty", test_empty);
+	test_one("size", test_size);
 	test_one("push_pop", test_push_pop);
 	test_one("assign_copy", test_assign_copy);
 	test_one("swap", test_swap);
 	test_one("cmp_eq", test_cmp_eq);
+	test_one("relational_operators", test_relational_operator);
 }
