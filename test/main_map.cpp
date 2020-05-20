@@ -385,17 +385,13 @@ static void test_erase()
 	assert(st_mymap.size() == 4);
 
 	//delete using first, last iterator
-	ft::Map<int,int>::iterator ft_it1 = ft_mymap.find(2);
-	std::map<int,int>::iterator st_it1 = st_mymap.find(2);
-	(void)ft_it1;
-	(void)st_it1;
+	ft::Map<int,int>::iterator ft_it1 = ft_mymap.find(4);
+	std::map<int,int>::iterator st_it1 = st_mymap.find(4);
 
-	// ft_mymap.erase(ft_it1, ft_mymap.end());
+	ft_mymap.erase(ft_mymap.begin(), ft_it1);
+	st_mymap.erase(st_mymap.begin(), st_it1);
 	// st_mymap.erase(st_it1, st_mymap.end());
 
-
-	// ft_mymap.erase(ft_mymap.begin(), ft_it1);
-	// st_mymap.erase(st_mymap.begin(), st_it1);
 }
 
 static void test_swap()

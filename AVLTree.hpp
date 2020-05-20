@@ -3,6 +3,7 @@
 # define AVL_TREE_HPP
 
 # include "Utility.hpp"
+# include "Vector.hpp"
 
 
 #include <stdio.h>
@@ -550,6 +551,77 @@ namespace ft
 				return x;
 			}
 
+			bool erase(const value_type& val)
+			{
+				node *del = NULL;
+				node *delp = NULL;
+				node *cdd = NULL;
+				node *cddp = NULL;
+				node *tmp = NULL;
+
+				if(_root == NULL)
+					return false;
+				tmp = _root;
+				while (tmp)
+				{
+					if (val.first == tmp->el.first)
+					{
+						del = tmp;
+						break;
+					}
+					if (_cmp(val, tmp->el))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				if (!del)
+					return false;
+				delp =del->parent;
+				if (!del->right) // case1. no right node of del
+					cdd = del->left;
+				else if (!del->right->left) // case2. right node of del has no left child
+				{
+					cdd = del->right;
+					cdd->left = del->left;
+					del->left->parent = cdd;
+				}
+				else // case3
+				{
+					cddp = del;
+					cdd = del->right;
+					while (cdd->left)
+					{
+						cddp = cdd;
+						cdd = cdd->left;
+					}
+					cddp->left = cdd->right;
+					if (cdd->right)
+						cdd->right->parent = cddp;
+
+					cdd->left = del->left;
+					if (del->left)
+						del->left->parent = cdd;
+
+					cdd->right = del->right;
+					del->right->parent = cdd;
+				}
+				// make cdd as child of delp
+				if (delp)
+				{
+					node **delpLR = (delp->left == del) ? &delp->left : &delp->right;
+					*delpLR = cdd;
+				}
+				else
+				{
+					_root = cdd;
+				}
+				if (cdd) // if del is not leaf node
+					cdd->parent = delp;
+				delete del;
+				_len--;
+				return true;
+			}
+
 			void erase(iterator position)
 			{
 				node* z = position._node;
@@ -589,12 +661,6 @@ namespace ft
 				
 			}
 
-			void erase(iterator first, iterator last)
-			{
-				(void)first;
-				(void)last;
-				//Implement using vector
-			}
 
 			node* getRoot() const
 			{

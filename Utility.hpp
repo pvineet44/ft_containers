@@ -10,6 +10,16 @@ namespace ft
 			bool operator()(const T &x, const T &y) const { return x < y; }
 		};
 
+		template <typename T>
+		T	fwd(T it, int n)
+		{
+			if (n > 0)
+				while (n--) it++;
+			else
+				while (n++) it--;
+			return (it);
+		}
+
 		template<typename E>
 		struct AVLTreeNode
 		{

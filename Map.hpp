@@ -199,9 +199,16 @@ namespace ft
 			return _tree.size();
 		}
 
+	
 		void erase(iterator first, iterator last)
 		{
-			_tree.erase(first, last);
+			iterator it = first;
+			while (it != last)
+			{
+				iterator successor = ft::fwd(it, 1);
+				erase(it);
+				it = successor;
+			}
 		}
 
 		void swap(Map<Key, T, Compare>& x)
