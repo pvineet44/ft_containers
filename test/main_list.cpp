@@ -1590,5 +1590,4 @@ void test_list()
 	test_one("sort", test_sort);
 	test_one("merge_compartor", test_merge_comp);
 	test_one("sort_comparator", test_sort_comp);
-
 }

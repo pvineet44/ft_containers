@@ -998,7 +998,7 @@ void test_vector()
 	test_one("constr_iter", test_constr_iter);
 	test_one("assign_copy", test_assign_copy);
 	test_one("accessors", test_accessors);
-	test_one("capacity", test_capacity);
+	test_one("capacity_reserve_clear", test_capacity);
 	test_one("iterator", test_iterator);
 	test_one("reverse_iterator", test_reverse_iterator);
 	test_one("insert_one", test_insert_one);
@@ -1007,7 +1007,7 @@ void test_vector()
 	test_one("erase", test_erase);
 	test_one("erase_range", test_erase_range);
 	test_one("pop_back", test_pop_back);
-	test_one("resize", test_resize);
+	test_one("resize_maxsize", test_resize);
 	test_one("swap", test_swap);
 	test_one("cmp_eq", test_cmp_eq);
 }
