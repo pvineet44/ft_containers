@@ -567,17 +567,46 @@ namespace ft
 			}
 			
 			template <typename Compare>
-			void merge(List& x, Compare comp)
+			void merge(List& other, Compare comp)
 			{
-				iterator beg = x.begin();
-				iterator end = x.end();
-				ft::List<T> newList;
-				while (beg != end)
+				ListNode<T> *x = this->_head;
+				ListNode<T> *y = other._head;
+				ListNode<T> *y1;
+				ListNode<T> *bef;
+
+				while (y != NULL)
 				{
-					push_back(*beg);
-					beg++;
+					if ( comp(x->node,y->node) && x != _tail)
+						x = x->nxt;
+					else if (x != _tail)
+					{
+						y1 = y->nxt;
+						if (x != _head)
+						{
+							bef = x->prev;
+							bef->nxt = y;
+							y->prev = bef;
+						}
+						else
+							_head = y;
+						y->nxt = x;
+						x->prev = y;
+						y = y1;
+					}
+					else
+					{
+						y1 = y->nxt;
+						x->nxt = y;
+						y->prev = x;
+						x = x->nxt;
+						y = y1;
+						_tail = x;
+					}
 				}
-				this->sort(comp);
+				_len += other._len;
+				other._len = 0;
+				other._head = NULL;
+				other._tail = NULL;
 			}
 			
 			void sort()

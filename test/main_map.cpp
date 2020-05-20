@@ -701,7 +701,6 @@ void test_map()
 		test_one("capacity", test_empty_and_maxsize);
 		test_one("element_access", test_element_access);
 		test_one("insert", test_insert);
-		test_one("insert", test_insert);
 		test_one("erase", test_erase);
 		test_one("swap", test_swap);
 		test_one("clear", test_clear);

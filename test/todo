@@ -1,0 +1,18 @@
+todo
+
+stack
+    constr
+    empty
+    back
+
+queue
+    constr
+    empty
+    back
+
+vector
+    capacity
+    back
+
+list
+    back
