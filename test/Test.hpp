@@ -3,6 +3,8 @@
 # include "../List.hpp"
 # include "../Map.hpp"
 # include "../Vector.hpp"
+# include "../Stack.hpp"
+# include "../Queue.hpp"
 # include <iostream>
 # include <assert.h>
 # include <sstream>
@@ -34,6 +36,8 @@ bool operator>=(const ConstrCounter& lhs, const ConstrCounter& rhs);
 
 void test_one(std::string name, void (&fn)());
 
+void test_stack();
+void test_queue();
 void test_list();
 void test_map();
 void test_vector();

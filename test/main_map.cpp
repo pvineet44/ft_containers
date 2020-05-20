@@ -691,7 +691,7 @@ static void test_equal_range()
 
 void test_map()
 {
-		std::cout << "\e[1m\e[34m \n<=== Testing Map ===>\n\n";
+		std::cout << "\e[1m\e[95m \n<=== Testing Map ===>\n\n";
 		test_one("constr", test_constr);
 		test_one("assign_copy", test_assign_copy);
 		test_one("begin", test_begin);

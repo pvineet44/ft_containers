@@ -863,6 +863,7 @@ static void test_resize()
 	ft::Vector<ConstrCounter> vec;
 	std::vector<ConstrCounter> v;
 	assert(v.max_size() == vec.max_size());
+
 	vec.resize(3, ConstrCounter(0));
 	assert(vec.size() == 3);
 	assert(vec[0].val == 0);
@@ -988,7 +989,8 @@ static void test_cmp_eq()
 
 void test_vector()
 {
-	std::cout << "\e[1m\e[96m \n<=== Testing Vector ===>\n\n";
+    std::cout << "\e[1m\e[93m \n<=== Testing Vector ===>\n\n";
+
 	test_one("push_back", test_pushback);
 	test_one("assign", test_assign);
 	test_one("assign_iter", test_assign_iter);

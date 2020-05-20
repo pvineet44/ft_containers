@@ -500,8 +500,6 @@ static void test_capacity()
 
 
 	assert(lst.max_size() == l.max_size());
-	std::cout << "STL max_size = FT max_size" << std::endl;
-
 
 	lst.push_back(ConstrCounter(0));
 	assert(lst.front().val == 0);
@@ -1442,20 +1440,7 @@ static void test_merge()
 	
 	lst.merge(lst1);
 	assert(lst.size() == 10);
-
-	std::cout << get_n_fwd(lst, 0)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 1)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 2)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 3)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 4)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 5)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 6)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 7)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 8)->val << std::endl ;
-	std::cout << get_n_fwd(lst, 9)->val << std::endl ;
-	std::cout << lst.size() << std::endl;
 	
-	// exit(0);
 	
 	assert(get_n_fwd(lst, 0)->val == 0);
 	assert(get_n_fwd(lst, 1)->val == 1);
@@ -1571,6 +1556,8 @@ static void test_sort_comp()
 
 void test_list()
 {
+    std::cout << "\e[1m\e[92m \n<=== Testing List ===>\n\n";
+
 	test_one("push_back", test_pushback);
 	test_one("push_front", test_pushfront);
 	test_one("assign", test_assign);
