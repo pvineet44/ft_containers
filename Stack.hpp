@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 # define STACK_HPP
-#include "List.hpp"
+
+# include "List.hpp"
 
 namespace ft
 {

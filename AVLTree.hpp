@@ -4,12 +4,7 @@
 
 # include "Utility.hpp"
 # include "Vector.hpp"
-
-
-#include <stdio.h>
-#include <sstream>
-#include <iostream>
-
+# include <sstream>
 
 namespace ft
 {
@@ -213,22 +208,6 @@ namespace ft
 				deep_free(n->right);
 				delete n;
 				n = NULL;
-			}
-
-			static void print_rec(node* n, int indent = 1)
-			{
-				std::stringstream ss;
-				for (int i = 0; i < indent; i++) ss << ">>";
-				if (!n)
-				{
-					printf("%s NULL\n", ss.str().c_str());
-					return;
-				}
-				printf("%s El is %d (h = %d, balance = %d)\n", ss.str().c_str(), n->el.first, n->height, balance_factor(n));
-				printf("%s Left\n", ss.str().c_str());
-				print_rec(n->left, indent + 1);
-				printf("%s Right\n", ss.str().c_str());
-				print_rec(n->right, indent + 1);
 			}
 
 			static int max(int a, int b)

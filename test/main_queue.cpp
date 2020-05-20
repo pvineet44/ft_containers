@@ -529,7 +529,7 @@ static void test_empty()
 static void	test_size()
 {
 	std::queue<ConstrCounter> st_myqueue;
-	ft::Queue<ConstrCounter> ft_myqueue;
+	ft::Queue<int> ft_myqueue;
 
 	assert(st_myqueue.size() == 0);
 	assert(ft_myqueue.size() == 0);
